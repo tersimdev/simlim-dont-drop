@@ -41,8 +41,6 @@ public class SplashPage extends Activity {
                     finish();
                     Intent i = new Intent(SplashPage.this, GameScene.class);
                     startActivity(i);
-
-
                 }
             }
         };

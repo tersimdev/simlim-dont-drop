@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Test">
+
+    <EditText
+        android:id="@+id/edit_text_name"
+        android:layout_width="291dp"
+        android:layout_height="61dp"
+        android:hint="Name"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08" />
+    <EditText
+        android:id="@+id/edit_text_kink"
+        android:layout_width="291dp"
+        android:layout_height="61dp"
+        android:hint="Kink"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:text="SAVE"
+        android:onClick="saveKink"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_kink"
+        app:layout_constraintVertical_bias="0.033" />
+
+    <Button
+        android:id="@+id/button_load"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:onClick="loadKink"
+        android:text="LOAD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_save"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/text_data"
+        android:layout_width="286dp"
+        android:layout_height="290dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_load"
+        app:layout_constraintVertical_bias="0.148" />
+
+    <Button
+        android:id="@+id/btn_mainmenu"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="4dp"
+        android:onClick="backToMainMenu"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_data"
+        app:layout_constraintVertical_bias="0.404" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
