@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,8 @@ public class GameScene extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game_scene);
 
         editTextName = findViewById(R.id.edit_text_name);
@@ -121,5 +125,21 @@ public class GameScene extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(this, MainMenu.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }
