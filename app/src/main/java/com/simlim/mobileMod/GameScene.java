@@ -1,9 +1,10 @@
-  package com.simlim.mobileMod;
+package com.simlim.mobileMod;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,9 +26,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-  public class MainActivity extends AppCompatActivity {
+public class GameScene extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GameScene";
 
     private static final String KEY_NAME = "name";
     private static final String KEY_KINK = "kink";
@@ -43,30 +44,30 @@ import java.util.Map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game_scene);
 
         editTextName = findViewById(R.id.edit_text_name);
         editTextKink = findViewById(R.id.edit_text_kink);
         textViewData = findViewById(R.id.text_data);
     }
 
-      @Override
-      protected void onStart() {
-          super.onStart();
-          collRef.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-              @Override
-              public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                  if (!queryDocumentSnapshots.isEmpty()) {
-                      String name = queryDocumentSnapshots.getDocuments().get(0).getString(KEY_NAME);
-                      String kink = queryDocumentSnapshots.getDocuments().get(0).getString(KEY_KINK);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        collRef.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    String name = queryDocumentSnapshots.getDocuments().get(0).getString(KEY_NAME);
+                    String kink = queryDocumentSnapshots.getDocuments().get(0).getString(KEY_KINK);
 
-                      textViewData.setText("Name: " + name + "\n" + "Kink: " + kink + "\n");
-                  }
-              }
-          });
-      }
+                    textViewData.setText("Name: " + name + "\n" + "Kink: " + kink + "\n");
+                }
+            }
+        });
+    }
 
-      public void saveKink(View v) {
+    public void saveKink(View v) {
         String name = editTextName.getText().toString();
         String kink = editTextKink.getText().toString();
         Map<String, Object> saveObj = new HashMap<>();
@@ -78,13 +79,13 @@ import java.util.Map;
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(MainActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameScene.this, "Saved", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameScene.this, "Error!", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, e.toString());
                     }
                 });
@@ -103,16 +104,22 @@ import java.util.Map;
 
                             textViewData.setText("Name: " + name + "\n" + "Kink: " + kink + "\n");
                         } else {
-                            Toast.makeText(MainActivity.this, "No previous entry!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameScene.this, "No previous entry!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameScene.this, "Error!", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, e.toString());
                     }
                 });
+    }
+
+    public void backToMainMenu(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, MainMenu.class);
+        startActivity(intent);
     }
 }

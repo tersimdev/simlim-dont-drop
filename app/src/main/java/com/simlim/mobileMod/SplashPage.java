@@ -39,7 +39,7 @@ public class SplashPage extends Activity {
                 }
                 finally {
                     finish();
-                    Intent i = new Intent(SplashPage.this, MainMenu.class);
+                    Intent i = new Intent(SplashPage.this, GameScene.class);
                     startActivity(i);
 
 
