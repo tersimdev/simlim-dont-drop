@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".GameScene"></activity>
+        <activity android:name=".GamePage"></activity>
         <activity
             android:name=".Test"
             android:screenOrientation="portrait">

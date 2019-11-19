@@ -1,6 +1,7 @@
 package com.simlim.mobileMod;
-
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.view.SurfaceView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class MainMenu extends Activity implements View.OnClickListener {
+public class MainMenu extends Activity implements View.OnClickListener, StateBase {
 
     private Button btn_start, btn_back;
 
@@ -40,6 +41,27 @@ public class MainMenu extends Activity implements View.OnClickListener {
         }
 
         startActivity(intent);
+    }
+
+    @Override
+    public void Render(Canvas _canvas) {
+    }
+
+    @Override
+    public void OnEnter(SurfaceView _view) {
+    }
+
+    @Override
+    public void OnExit() {
+    }
+
+    @Override
+    public void Update(float _dt) {
+    }
+
+    @Override
+    public String GetName() {
+        return "Mainmenu";
     }
 
     @Override
