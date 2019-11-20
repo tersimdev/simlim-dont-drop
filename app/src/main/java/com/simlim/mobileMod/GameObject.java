@@ -43,14 +43,14 @@ public class GameObject implements EntityBase, Collidable {
 
     @Override
     public void Render(Canvas _canvas) {
-        Bitmap bmp = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+        Bitmap bmp = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
         Paint paint = new Paint();
         paint.setColor(color);
 
         Canvas c = new Canvas(bmp);
-        c.drawRect(rect, paint);
+        c.drawRect(0, 0, rect.width(), rect.height(), paint);
 
-        _canvas.drawBitmap(bmp, 0, 0, paint);
+        _canvas.drawBitmap(bmp, rect.left, rect.top, paint);
 //        System.out.println("Rendering");
     }
 

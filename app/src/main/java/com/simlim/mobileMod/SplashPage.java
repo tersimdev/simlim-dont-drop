@@ -10,7 +10,7 @@ import android.view.WindowManager;
 public class SplashPage extends Activity {
 
     protected boolean active = true;
-    protected int splashTime = 5000;
+    protected int splashTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,8 @@ public class SplashPage extends Activity {
                     finish();
 //                    Intent i = new Intent(SplashPage.this, GameScene.class);
                     Intent i = new Intent(SplashPage.this, GamePage.class);
+
+                    StateManager.Instance.ChangeState("MainGame");
                     startActivity(i);
                 }
             }

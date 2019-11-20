@@ -12,6 +12,9 @@ import android.view.SurfaceView;
 public class MainGameSceneState implements StateBase {
     private float timer = 0.0f;
 
+    private int mapWidth = 8;
+    private int mapHeight = 12;
+
     @Override
     public String GetName() {
         return "MainGame";
@@ -20,12 +23,33 @@ public class MainGameSceneState implements StateBase {
     @Override
     public void OnEnter(SurfaceView _view)
     {
+
 //        RenderBackground.Create();
-        GameObject square = new GameObject();
-        square.color = Color.RED;
-        square.rect = new Rect(20, 20, 200, 200);
-        EntityManager.Instance.AddEntity(square);
-        // Example to include another Renderview for Pause Button
+        // Example to include another Renderview
+        // for Pause Button
+
+        // Generating map
+        final float mapHalfWidth = (float)mapWidth * 0.5f;
+        final float mapHalfHeight = (float)mapHeight * 0.5f;
+
+        final float mapScreenWidth = (float)_view.getHeight() * 0.5f;
+        final float tileSize = mapScreenWidth / (float)mapWidth;
+        final float mapScreenHeight = tileSize * (float)mapHeight;
+
+        final float mapX =  ((float)_view.getWidth() - mapScreenWidth) * 0.5f;
+        final float mapY =  ((float)_view.getHeight() - mapScreenHeight) * 0.5f;
+
+        for (int x = 0; x < mapWidth; ++x) {
+            for (int y = 0; y < mapHeight; ++y) {
+                final int posX = x * (int)tileSize + (int)mapX;
+                final int posY = y * (int)tileSize + (int)mapY;
+
+                GameObject tile = new GameObject();
+                tile.color = Color.RED;
+                tile.rect = new Rect(posX, posY, posX + (int)(tileSize * 0.8f), posY + (int)(tileSize * 0.8f));
+                EntityManager.Instance.AddEntity(tile);
+            }
+        }
     }
 
     @Override
