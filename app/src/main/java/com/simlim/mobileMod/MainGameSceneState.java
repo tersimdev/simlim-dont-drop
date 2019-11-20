@@ -5,7 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.method.Touch;
 import android.view.SurfaceView;
+
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
 
 // Created by TanSiewLan2019
 
@@ -14,6 +19,8 @@ public class MainGameSceneState implements StateBase {
 
     private int mapWidth = 8;
     private int mapHeight = 12;
+    private List<GameObject> map = new ArrayList<GameObject>();
+
 
     @Override
     public String GetName() {
@@ -48,6 +55,7 @@ public class MainGameSceneState implements StateBase {
                 tile.color = Color.RED;
                 tile.rect = new Rect(posX, posY, posX + (int)(tileSize * 0.8f), posY + (int)(tileSize * 0.8f));
                 EntityManager.Instance.AddEntity(tile);
+                map.add(tile);
             }
         }
     }
@@ -73,6 +81,10 @@ public class MainGameSceneState implements StateBase {
         if (TouchManager.Instance.IsDown()) {
 			
             //Example of touch on screen in the main game to trigger back to Main menu
+            float x = TouchManager.Instance.GetPosX() - map.get(0).GetPosX();
+            float y = TouchManager.Instance.GetPosY() - map.get(0).GetPosY();
+            if (Math.abs(x) < 100 && Math.abs(y) < 100)
+                System.out.println(Float.toString(x) + ", " + Float.toString(y));
         }
     }
 }

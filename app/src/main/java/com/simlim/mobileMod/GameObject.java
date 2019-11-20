@@ -19,7 +19,7 @@ public class GameObject implements EntityBase, Collidable {
     private int renderLayer = 0;
 
     String type;
-    float x, y, radius;
+    float radius;
 
     @Override
     public boolean IsDone() {
@@ -75,13 +75,11 @@ public class GameObject implements EntityBase, Collidable {
     }
 
     @Override
-    public float GetPosX() {
-        return this.x;
-    }
+    public float GetPosX() { return this.rect.centerX(); }
 
     @Override
     public float GetPosY() {
-        return this.y;
+        return this.rect.centerY();
     }
 
     @Override
