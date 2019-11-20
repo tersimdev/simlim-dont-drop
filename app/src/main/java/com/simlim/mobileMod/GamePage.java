@@ -6,8 +6,15 @@ package com.simlim.mobileMod;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.google.api.Distribution;
 
 public class GamePage extends Activity {
 
@@ -19,11 +26,17 @@ public class GamePage extends Activity {
 
         //To make fullscreen
         requestWindowFeature(Window.FEATURE_NO_TITLE); // Hide titlebar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  // Hide topbar
+        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);  // Hide topbar
 
         Instance = this;
 
-        setContentView(new GameView(this)); // Surfaceview = GameView
+        setContentView(R.layout.activity_game_scene);
+        LinearLayout container = findViewById(R.id.container);
+
+        GameView gameView = new GameView(this);
+        container.addView(gameView);
+//        container.removeView(gameView);
+//        setContentView(); // Surfaceview = GameView
     }
 
     @Override
@@ -38,5 +51,8 @@ public class GamePage extends Activity {
         return true;
     }
 
+    public void backToMainMenu(View view) {
+        StateManager.Instance.ChangeState("Mainmenu");
+    }
 }
 

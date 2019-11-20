@@ -39,7 +39,6 @@ public class SplashPage extends Activity {
                 }
                 finally {
                     finish();
-//                    Intent i = new Intent(SplashPage.this, GameScene.class);
                     Intent i = new Intent(SplashPage.this, GamePage.class);
 
                     StateManager.Instance.ChangeState("MainGame");
