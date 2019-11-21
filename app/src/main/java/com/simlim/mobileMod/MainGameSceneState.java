@@ -19,8 +19,13 @@ public class MainGameSceneState implements StateBase {
 
     private int mapWidth = 8;
     private int mapHeight = 12;
+    private float mapOffsetX = 0.f;
+    private float mapOffsetY = 0.f;
+    private float tileSize = 0.f;
+
     private List<GameObject> map = new ArrayList<GameObject>();
 
+    private GameObject player;
 
     @Override
     public String GetName() {
@@ -40,16 +45,16 @@ public class MainGameSceneState implements StateBase {
         final float mapHalfHeight = (float)mapHeight * 0.5f;
 
         final float mapScreenWidth = (float)_view.getHeight() * 0.5f;
-        final float tileSize = mapScreenWidth / (float)mapWidth;
+        tileSize = mapScreenWidth / (float)mapWidth;
         final float mapScreenHeight = tileSize * (float)mapHeight;
 
-        final float mapX =  ((float)_view.getWidth() - mapScreenWidth) * 0.5f;
-        final float mapY =  ((float)_view.getHeight() - mapScreenHeight) * 0.5f;
+        mapOffsetX =  ((float)_view.getWidth() - mapScreenWidth) * 0.5f;
+        mapOffsetY =  ((float)_view.getHeight() - mapScreenHeight) * 0.5f;
 
         for (int x = 0; x < mapWidth; ++x) {
             for (int y = 0; y < mapHeight; ++y) {
-                final int posX = x * (int)tileSize + (int)mapX;
-                final int posY = y * (int)tileSize + (int)mapY;
+                final int posX = x * (int)tileSize + (int)mapOffsetX;
+                final int posY = y * (int)tileSize + (int)mapOffsetY;
 
                 GameObject tile = new GameObject();
                 tile.color = Color.RED;
@@ -58,6 +63,11 @@ public class MainGameSceneState implements StateBase {
                 map.add(tile);
             }
         }
+
+        player = new GameObject();
+        player.color = Color.GREEN;
+        player.rect = new Rect(0, 0, (int)(tileSize * 0.8f), (int)(tileSize * 0.8f));
+        EntityManager.Instance.AddEntity(player);
     }
 
     @Override
@@ -81,12 +91,28 @@ public class MainGameSceneState implements StateBase {
         if (TouchManager.Instance.IsDown()) {
 			
             //Example of touch on screen in the main game to trigger back to Main menu
-            float x = TouchManager.Instance.GetPosX() - map.get(0).GetPosX();
-            float y = TouchManager.Instance.GetPosY() - map.get(0).GetPosY();
-            if (Math.abs(x) < 100 && Math.abs(y) < 100)
-                System.out.println(Float.toString(x) + ", " + Float.toString(y));
+            float x = TouchManager.Instance.GetPosX();// - map.get(0).GetPosX();
+            float y = TouchManager.Instance.GetPosY();// - map.get(0).GetPosY();
+//            if (Math.abs(x) < 100 && Math.abs(y) < 100)
+
+            map.get(getScreenspaceToMapIndex(x, y)).color = Color.GREEN;
+
+//            player.SetPosX(x);
+//            player.SetPosY(y);
         }
     }
+
+    private int getMapIndex(int _x, int _y) {
+        return _x * mapHeight + _y;
+    }
+
+    private int getScreenspaceToMapIndex(float _x, float _y) {
+        final int x = (int)((_x - mapOffsetX + 0.5f) / tileSize);
+        final int y = (int)((_y - mapOffsetY + 0.5f) / tileSize);
+
+        return getMapIndex(x, y);
+    }
+
 }
 
 
