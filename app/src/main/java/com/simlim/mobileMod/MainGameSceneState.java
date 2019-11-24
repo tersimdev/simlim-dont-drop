@@ -8,11 +8,27 @@ import android.view.SurfaceView;
 
 import java.time.Clock;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 // Created by TanSiewLan2019
 
 public class MainGameSceneState implements StateBase {
+
+    public enum TileType {
+        BLOCKED, PATH, TRASH, BIN;
+
+        private static final List<TileType> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+        private static final int SIZE = VALUES.size();
+        private static final Random RANDOM = new Random();
+
+        public static TileType random() {
+            return VALUES.get(RANDOM.nextInt(SIZE));
+        }
+    };
+
     private float timer = 0.0f;
 
     private int mapWidth = 24;
@@ -22,7 +38,8 @@ public class MainGameSceneState implements StateBase {
     private float tileSize = 0.f;
     private float padding = 0.f;
 
-    private List<GameObject> map = new ArrayList<GameObject>();
+    private List<TileType> map = new ArrayList<>();
+    private List<GameObject> mapObjects = new ArrayList<GameObject>();
 
     private GameObject player;
 
@@ -40,7 +57,7 @@ public class MainGameSceneState implements StateBase {
         // for Pause Button
 
         // Generating map
-        if (map.size() != 0) return;
+        if (mapObjects.size() != 0) return;
 
         final float mapHalfWidth = (float)mapWidth * 0.5f;
         final float mapHalfHeight = (float)mapHeight * 0.5f;
@@ -54,18 +71,39 @@ public class MainGameSceneState implements StateBase {
 
         for (int x = 0; x < mapWidth; ++x) {
             for (int y = 0; y < mapHeight; ++y) {
+                final TileType type = TileType.random();
+                map.add(type);
+
                 final int posX = x * (int)tileSize + (int)mapOffsetX + (int)padding;
                 final int posY = y * (int)tileSize + (int)mapOffsetY + (int)padding;
                 final int size = (int)(tileSize - 2.f * padding);
 
                 GameObject tile = new GameObject();
-                tile.color = Color.RED;
+
+                switch (type) {
+                    case BLOCKED:
+                        tile.color = Color.BLACK;
+                        break;
+                    case PATH:
+                        tile.color = Color.WHITE;
+                        break;
+                    case TRASH:
+                        tile.color = Color.RED;
+                        break;
+                    case BIN:
+                        tile.color = Color.GRAY;
+                        break;
+                    default:
+                        break;
+                }
+
+
                 tile.rect = new Rect(posX, posY, posX + size, posY + size);
                 EntityManager.Instance.AddEntity(tile);
-                map.add(tile);
+                mapObjects.add(tile);
             }
         }
-
+        
         player = new GameObject();
         player.color = Color.BLUE;
         player.rect = new Rect(0, 0, (int)(tileSize * 0.8f), (int)(tileSize * 0.8f));
@@ -96,7 +134,7 @@ public class MainGameSceneState implements StateBase {
 
             final int mapIndex = getScreenSpaceToMapIndex(x, y);
             if (mapIndex >= 0)
-                map.get(mapIndex).color = Color.GREEN;
+                mapObjects.get(mapIndex).color = Color.GREEN;
 
             PointF mapPosition = getScreenSpaceToMapPosition(x, y);
 
