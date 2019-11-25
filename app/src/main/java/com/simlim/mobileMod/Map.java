@@ -66,32 +66,12 @@ public class Map {
 
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
-                TileType type = tiles.get(getIndex(x, y));
-
                 final int posX = x * (int)tileSize + (int)offset.x + (int)padding;
                 final int posY = y * (int)tileSize + (int)offset.y + (int)padding;
                 final int size = (int)(tileSize - 2.f * padding);
 
                 GameObject tile = new GameObject();
-
-                switch (type) {
-                    case BLOCKED:
-                        tile.color = Color.BLACK;
-                        break;
-                    case PATH:
-                        tile.color = Color.WHITE;
-                        break;
-                    case TRASH:
-                        tile.color = Color.RED;
-                        break;
-                    case BIN:
-                        tile.color = Color.GRAY;
-                        break;
-                    default:
-                        break;
-                }
-
-
+                tile.color = getColor(getIndex(x, y));
                 tile.rect = new Rect(posX, posY, posX + size, posY + size);
                 EntityManager.Instance.AddEntity(tile);
                 objects.add(tile);
@@ -161,6 +141,13 @@ public class Map {
         return newPosition;
     }
 
+    public void Reset(List<Integer> path) {
+        for (int i: path) {
+            GameObject go = getGameObject(i);
+            go.color = getColor(i);
+        }
+    }
+
     public GameObject getGameObject(int _index) {
         return objects.get(_index);
     }
@@ -209,6 +196,21 @@ public class Map {
         );
         return add(position, offset);
 
+    }
+
+    public int getColor(int idx) {
+        switch (getTile(idx)) {
+            case BLOCKED:
+                return Color.BLACK;
+            case PATH:
+                return Color.WHITE;
+            case  TRASH:
+                return Color.RED;
+            case BIN:
+                return Color.GRAY;
+            default:
+                return Color.YELLOW;
+        }
     }
 
     public PointF add(PointF a, PointF b) {

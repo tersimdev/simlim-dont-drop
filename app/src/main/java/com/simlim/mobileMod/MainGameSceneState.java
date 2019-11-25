@@ -24,9 +24,7 @@ public class MainGameSceneState implements StateBase {
     private float timer = 0.0f;
 
     private Map map;
-    private List<Integer> path = new ArrayList<>();
-
-    private GameObject player;
+    private Player player;
 
     @Override
     public String GetName() {
@@ -36,18 +34,8 @@ public class MainGameSceneState implements StateBase {
     @Override
     public void OnEnter(SurfaceView _view)
     {
-
-//        RenderBackground.Create();
-        // Example to include another Renderview
-        // for Pause Button
-
-        // Generating map
         map = new Map(30, 30, _view);
-
-        player = new GameObject();
-        player.color = Color.BLUE;
-        player.rect = new Rect(0, 0, (int)(map.getTileSize() * 0.8f), (int)(map.getTileSize() * 0.8f));
-        EntityManager.Instance.AddEntity(player);
+        player = new Player((int)(map.getTileSize() * 0.8f));
     }
 
     @Override
@@ -67,40 +55,21 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.Update(_dt);
 
         if (TouchManager.Instance.HasTouch()) {
-            //Example of touch on screen in the main game to trigger back to Main menu
             final float x = TouchManager.Instance.GetPosX();
             final float y = TouchManager.Instance.GetPosY();
 
             final int mapIndex = map.getScreenSpaceToMapIndex(x, y);
-            if (mapIndex >= 0)
+            if (mapIndex >= 0 && map.getTile(mapIndex) != Map.TileType.BLOCKED) {
                 map.getGameObject(mapIndex).color = Color.GREEN;
+                PointF tilePosition = map.getTilePosition(x, y);
 
-            PointF tilePosition = map.getTilePosition(x, y);
-            player.SetPosX(tilePosition.x);
-            player.SetPosY(tilePosition.y);
-
-            path.add(mapIndex);
-        } else {
-            for (int i: path) {
-                GameObject go = map.getGameObject(i);
-                switch (map.getTile(i)) {
-                    case BLOCKED:
-                        go.color = Color.BLACK;
-                        break; 
-                    case PATH:
-                        go.color = Color.WHITE;
-                        break;
-                    case  TRASH:
-                        go.color = Color.RED;
-                        break;
-                    case BIN:
-                        go.color = Color.GRAY;
-                        break;
-                    default:
-                        break;
-                }
+                player.SetPosX(tilePosition.x);
+                player.SetPosY(tilePosition.y);
+                player.path.add(mapIndex);
             }
-            path.clear();
+        } else {
+            map.Reset(player.path);
+            player.path.clear();
         }
     }
 
