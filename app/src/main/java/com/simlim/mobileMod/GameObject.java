@@ -18,8 +18,7 @@ public class GameObject implements EntityBase {
     private boolean isInit = false;
     private int renderLayer = 0;
 
-    String type;
-    float radius;
+    private Bitmap bmp;
 
     @Override
     public boolean IsDone() {
@@ -50,7 +49,7 @@ public class GameObject implements EntityBase {
         Canvas c = new Canvas(bmp);
         c.drawRect(0, 0, rect.width(), rect.height(), paint);
 
-        _canvas.drawBitmap(bmp, rect.left, rect.top, paint);
+        _canvas.drawBitmap(bmp, rect.left, rect.top, null);
 //        System.out.println("Rendering");
     }
 

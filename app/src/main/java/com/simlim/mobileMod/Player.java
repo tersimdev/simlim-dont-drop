@@ -9,6 +9,7 @@ import java.util.List;
 public class Player extends GameObject implements Collidable {
 
     public List<Integer> path = new ArrayList<>();
+    private float radius;
 
     public Player(int size) {
         color = Color.BLUE;
