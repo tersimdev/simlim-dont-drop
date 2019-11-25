@@ -24,6 +24,7 @@ public class MainGameSceneState implements StateBase {
     private float timer = 0.0f;
 
     private Map map;
+    private List<Integer> path = new ArrayList<>();
 
     private GameObject player;
 
@@ -59,7 +60,6 @@ public class MainGameSceneState implements StateBase {
     public void Render(Canvas _canvas)
     {
         EntityManager.Instance.Render(_canvas);
-
     }
 
     @Override
@@ -76,9 +76,31 @@ public class MainGameSceneState implements StateBase {
                 map.getGameObject(mapIndex).color = Color.GREEN;
 
             PointF tilePosition = map.getTilePosition(x, y);
-
             player.SetPosX(tilePosition.x);
             player.SetPosY(tilePosition.y);
+
+            path.add(mapIndex);
+        } else {
+            for (int i: path) {
+                GameObject go = mapObjects.get(i);
+                switch (map.get(i)) {
+                    case BLOCKED:
+                        go.color = Color.BLACK;
+                        break;
+                    case PATH:
+                        go.color = Color.WHITE;
+                        break;
+                    case  TRASH:
+                        go.color = Color.RED;
+                        break;
+                    case BIN:
+                        go.color = Color.GRAY;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            path.clear();
         }
     }
 
