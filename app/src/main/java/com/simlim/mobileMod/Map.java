@@ -165,6 +165,10 @@ public class Map {
         return objects.get(_index);
     }
 
+    public TileType getTile(int _index) {
+        return tiles.get(_index);
+    }
+
     public float getTileSize() {
         return tileSize;
     }

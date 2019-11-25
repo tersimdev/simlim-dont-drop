@@ -82,11 +82,11 @@ public class MainGameSceneState implements StateBase {
             path.add(mapIndex);
         } else {
             for (int i: path) {
-                GameObject go = mapObjects.get(i);
-                switch (map.get(i)) {
+                GameObject go = map.getGameObject(i);
+                switch (map.getTile(i)) {
                     case BLOCKED:
                         go.color = Color.BLACK;
-                        break;
+                        break; 
                     case PATH:
                         go.color = Color.WHITE;
                         break;
