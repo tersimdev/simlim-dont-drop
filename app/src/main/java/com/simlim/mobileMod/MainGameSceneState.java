@@ -42,7 +42,7 @@ public class MainGameSceneState implements StateBase {
         // for Pause Button
 
         // Generating map
-        map = new Map(30, 30, _view);
+        map = new Map(30, 60, _view);
 
         player = new GameObject();
         player.color = Color.BLUE;
@@ -86,7 +86,7 @@ public class MainGameSceneState implements StateBase {
                 switch (map.getTile(i)) {
                     case BLOCKED:
                         go.color = Color.BLACK;
-                        break; 
+                        break;
                     case PATH:
                         go.color = Color.WHITE;
                         break;

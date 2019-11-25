@@ -9,7 +9,7 @@ import android.view.SurfaceView;
 
 import java.lang.reflect.GenericArrayType;
 
-public class GameObject implements EntityBase, Collidable {
+public class GameObject implements EntityBase { //, Collidable {
 
     public Rect rect;
     public int color;
@@ -69,11 +69,6 @@ public class GameObject implements EntityBase, Collidable {
         this.renderLayer = _newLayer;
     }
 
-    @Override
-    public String GetType() {
-        return this.type;
-    }
-
     public void SetPosX(float _x) {
         final float halfWidth = ((float)rect.right - (float)rect.left) * 0.5f;
         rect.left = (int)(_x - halfWidth);
@@ -86,21 +81,26 @@ public class GameObject implements EntityBase, Collidable {
         rect.bottom = (int)(_y + halfHeight);
     }
 
-    @Override
-    public float GetPosX() { return this.rect.centerX(); }
-
-    @Override
-    public float GetPosY() {
-        return this.rect.centerY();
-    }
-
-    @Override
-    public float GetRadius() {
-        return this.radius;
-    }
-
-    @Override
-    public void OnHit(Collidable _other) {
-
-    }
+//    @Override
+//    public String GetType() {
+//        return this.type;
+//    }
+//
+//    @Override
+//    public float GetPosX() { return this.rect.centerX(); }
+//
+//    @Override
+//    public float GetPosY() {
+//        return this.rect.centerY();
+//    }
+//
+//    @Override
+//    public float GetRadius() {
+//        return this.radius;
+//    }
+//
+//    @Override
+//    public void OnHit(Collidable _other) {
+//
+//    }
 }
