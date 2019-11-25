@@ -198,7 +198,7 @@ public class Map {
 
     }
 
-    public int getColor(int idx) {
+    private int getColor(int idx) {
         switch (getTile(idx)) {
             case BLOCKED:
                 return Color.BLACK;
