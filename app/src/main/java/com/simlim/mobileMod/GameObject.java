@@ -10,7 +10,7 @@ import android.view.SurfaceView;
 
 import java.lang.reflect.GenericArrayType;
 
-public class GameObject implements EntityBase { //, Collidable {
+public class GameObject implements EntityBase {
 
     public Rect rect;
     public int color;
@@ -23,8 +23,7 @@ public class GameObject implements EntityBase { //, Collidable {
     private boolean isInit = false;
     private int renderLayer = 0;
 
-    String type;
-    float radius;
+    private Bitmap bmp;
 
     @Override
     public boolean IsDone() {
@@ -57,8 +56,6 @@ public class GameObject implements EntityBase { //, Collidable {
         System.out.println("Dst : " + rect);
 
         _canvas.drawBitmap(bmp, src, rect, null);
-
-        System.out.println("Rendering");
     }
 
     @Override
@@ -81,37 +78,14 @@ public class GameObject implements EntityBase { //, Collidable {
     }
 
     public void SetPosX(float _x) {
-        final float halfWidth = ((float)rect.right - (float)rect.left) * 0.5f;
-        rect.left = (int)(_x - halfWidth);
-        rect.right = (int)(_x + halfWidth);
+        final float halfWidth = ((float) rect.right - (float) rect.left) * 0.5f;
+        rect.left = (int) (_x - halfWidth);
+        rect.right = (int) (_x + halfWidth);
     }
 
     public void SetPosY(float _y) {
-        final float halfHeight = ((float)rect.bottom - (float)rect.top) * 0.5f;
-        rect.top = (int)(_y - halfHeight);
-        rect.bottom = (int)(_y + halfHeight);
+        final float halfHeight = ((float) rect.bottom - (float) rect.top) * 0.5f;
+        rect.top = (int) (_y - halfHeight);
+        rect.bottom = (int) (_y + halfHeight);
     }
-
-//    @Override
-//    public String GetType() {
-//        return this.type;
-//    }
-//
-//    @Override
-//    public float GetPosX() { return this.rect.centerX(); }
-//
-//    @Override
-//    public float GetPosY() {
-//        return this.rect.centerY();
-//    }
-//
-//    @Override
-//    public float GetRadius() {
-//        return this.radius;
-//    }
-//
-//    @Override
-//    public void OnHit(Collidable _other) {
-//
-//    }
 }
