@@ -42,9 +42,10 @@ public class MainGameSceneState implements StateBase {
         // for Pause Button
 
         // Generating map
-        map = new Map(30, 60, _view);
+        map = new Map(10, 10, _view);
 
         player = new GameObject();
+        player.SetResourceId(R.drawable.backgnd);;
         player.color = Color.BLUE;
         player.rect = new Rect(0, 0, (int)(map.getTileSize() * 0.8f), (int)(map.getTileSize() * 0.8f));
         EntityManager.Instance.AddEntity(player);

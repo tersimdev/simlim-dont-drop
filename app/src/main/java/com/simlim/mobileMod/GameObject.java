@@ -1,6 +1,7 @@
 package com.simlim .mobileMod;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +14,10 @@ public class GameObject implements EntityBase { //, Collidable {
 
     public Rect rect;
     public int color;
+
+    private Bitmap bmp = null;
+
+    private SurfaceView holder;
 
     private boolean isDone = false;
     private boolean isInit = false;
@@ -34,24 +39,26 @@ public class GameObject implements EntityBase { //, Collidable {
     @Override
     public void Init(SurfaceView _view) {
         this.isInit = true;
+        this.holder = _view;
     }
 
     @Override
-    public void Update(float _dt) {
-
-    }
+    public void Update(float _dt) { }
 
     @Override
     public void Render(Canvas _canvas) {
-        Bitmap bmp = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Paint paint = new Paint();
-        paint.setColor(color);
+        Rect src = new Rect();
+        src.left = 0;
+        src.top = 0;
+        src.right = bmp.getWidth();
+        src.bottom = bmp.getHeight();
 
-        Canvas c = new Canvas(bmp);
-        c.drawRect(0, 0, rect.width(), rect.height(), paint);
+        System.out.println("Src : " + src);
+        System.out.println("Dst : " + rect);
 
-        _canvas.drawBitmap(bmp, rect.left, rect.top, paint);
-//        System.out.println("Rendering");
+        _canvas.drawBitmap(bmp, src, rect, null);
+
+        System.out.println("Rendering");
     }
 
     @Override
@@ -67,6 +74,10 @@ public class GameObject implements EntityBase { //, Collidable {
     @Override
     public void SetRenderLayer(int _newLayer) {
         this.renderLayer = _newLayer;
+    }
+
+    public void SetResourceId(int _resourceId) {
+        bmp = BitmapFactory.decodeResource(holder.getResources(), _resourceId);
     }
 
     public void SetPosX(float _x) {

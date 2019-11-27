@@ -93,6 +93,7 @@ public class Map {
 
 
                 tile.rect = new Rect(posX, posY, posX + size, posY + size);
+                tile.SetResourceId(R.drawable.back);
                 EntityManager.Instance.AddEntity(tile);
                 objects.add(tile);
             }
