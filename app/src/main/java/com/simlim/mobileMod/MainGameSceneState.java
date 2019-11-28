@@ -47,7 +47,7 @@ public class MainGameSceneState implements StateBase {
         box.SetCenterY(height * 0.5f);
         EntityManager.Instance.AddEntity(box);
 
-        GameObject circle = new GameObject();
+        PhysicsObj circle = new PhysicsObj();
         circle.color = Color.WHITE;
         circle.SetWidth(width * 0.05f);
         circle.SetHeight(width * 0.05f);
@@ -58,10 +58,8 @@ public class MainGameSceneState implements StateBase {
         line.style = Paint.Style.STROKE;
         line.color = Color.WHITE;
         line.strokeWidth = 10.f;
-        line.start.x = width * 0.3f;
-        line.start.y = height * 0.7f;
-        line.end.x = width * 0.7f;
-        line.end.y = height * 0.7f;
+        line.setStart(new PointF(width * 0.3f, height * 0.7f));
+        line.setEnd(new PointF(width * 0.7f, height * 0.7f));
         EntityManager.Instance.AddEntity(line);
     }
 
@@ -86,13 +84,11 @@ public class MainGameSceneState implements StateBase {
             final float y = TouchManager.Instance.GetPosY();
 
             if (!isDown) {
-                line.start.x = x;
-                line.start.y = y;
+                line.setStart(new PointF(x, y));
                 isDown = true;
             }
 
-            line.end.x = x;
-            line.end.y = y;
+            line.setEnd(new PointF(x, y));
         } else {
             isDown = false;
         }
