@@ -35,7 +35,8 @@ public class EntityManager {
             if (!currEntity.IsInit())
                 currEntity.Init(view);
 
-            currEntity.Update(_dt);
+            if (currEntity.GetActive())
+                currEntity.Update(_dt);
 
             // Check if need to clean up
             if (currEntity.IsDone()) {
@@ -55,7 +56,7 @@ public class EntityManager {
         {
             EntityBase currEntity = entityList.get(i);
 
-            if (currEntity instanceof Collidable)
+            if (currEntity.GetActive() && currEntity instanceof Collidable)
             {
                 Collidable first = (Collidable) currEntity;
 
@@ -63,7 +64,7 @@ public class EntityManager {
                 {
                     EntityBase otherEntity = entityList.get(j);
 
-                    if (otherEntity instanceof Collidable)
+                    if (otherEntity.GetActive() && otherEntity instanceof Collidable)
                     {
                         Collidable second = (Collidable) otherEntity;
 
@@ -101,7 +102,8 @@ public class EntityManager {
         });
 
         for (EntityBase currEntity : entityList) {
-            currEntity.Render(_canvas);
+            if (currEntity.GetActive())
+                currEntity.Render(_canvas);
         }
     }
 

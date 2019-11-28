@@ -23,9 +23,15 @@ import java.util.Random;
 public class MainGameSceneState implements StateBase {
 
     private float timer = 0.0f;
+    private float bounceTime = timer;
 
-    boolean isDown = false;
-    Line line = new Line();
+    int width, height; //init at OnEnter
+
+    private boolean isDown = false;
+    private Line line = new Line();
+    private float score = 0.f;
+
+    private Pickup[] pickups = new Pickup[10];
 
     @Override
     public String GetName() {
@@ -34,8 +40,8 @@ public class MainGameSceneState implements StateBase {
 
     @Override
     public void OnEnter(SurfaceView _view) {
-        final int width = _view.getWidth();
-        final int height = _view.getHeight();
+        width = _view.getWidth();
+        height = _view.getHeight();
 
         GameObject box = new GameObject();
         box.style = Paint.Style.STROKE;
@@ -61,6 +67,20 @@ public class MainGameSceneState implements StateBase {
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
         EntityManager.Instance.AddEntity(line);
+
+        for (int i = 0; i < pickups.length; ++i) {
+
+            Pickup go = new Pickup();
+            go.color = Color.BLUE;
+            go.SetWidth(width * 0.05f);
+            go.SetHeight(width * 0.05f);
+            go.SetCenterX(width * 0.5f);
+            go.SetCenterY(height * 0.5f - 200);
+            EntityManager.Instance.AddEntity(go);
+            go.active = false;
+            pickups[i] = go;
+        }
+        pickups[0].active = true;
     }
 
     @Override
@@ -78,6 +98,25 @@ public class MainGameSceneState implements StateBase {
     @Override
     public void Update(float _dt) {
         EntityManager.Instance.Update(_dt);
+
+        score += _dt;
+        timer += _dt;
+
+        for (int i = 0; i < pickups.length; ++i) {
+            if (pickups[i].gotten) {
+                pickups[i].gotten = false;
+                score += 10;
+            }
+        }
+
+        if (bounceTime <= timer) {
+            bounceTime = timer + 3.0f;
+//            for (Pickup go : pickups) {
+//                if (!go.active) {
+//                    go.active = true;
+//                }
+//            }
+        }
 
         if (TouchManager.Instance.HasTouch()) {
             final float x = TouchManager.Instance.GetPosX();

@@ -22,6 +22,8 @@ public class GameObject implements EntityBase {
     private boolean isInit = false;
     private int renderLayer = 0;
 
+    public boolean active = true;
+
     @Override
     public boolean IsDone() {
         return this.isDone;
@@ -64,6 +66,11 @@ public class GameObject implements EntityBase {
     @Override
     public void SetRenderLayer(int _newLayer) {
         this.renderLayer = _newLayer;
+    }
+
+    @Override
+    public boolean GetActive() {
+        return active;
     }
 
     public void SetCenterX(float _x) {
