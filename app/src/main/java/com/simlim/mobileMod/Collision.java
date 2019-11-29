@@ -34,10 +34,9 @@ public class Collision {
         return true;
     }
 
-    public static HitInfo LineIntersect(Line line1, Line line2){
+    public static HitInfo LineIntersect(Line line1, Line line2) {
 
         float denominator = (line1.start.x - line1.end.x) * (line2.start.y - line2.end.y) - (line1.start.y - line1.end.y) * (line2.start.x - line2.end.x);
-
 
         if (denominator < EPSILON && denominator > -EPSILON) //lines are parallel
             return new HitInfo(false, null);
@@ -50,6 +49,8 @@ public class Collision {
             intersect = new PointF(line1.start.x + t * (line1.end.x - line1.start.x), line1.start.y + t * (line1.end.y - line1.start.y));
         else if (u >= 0 && u <= 1)
             intersect = new PointF(line2.start.x + u * (line2.end.x - line2.start.x), line2.start.y + u * (line2.end.y - line2.start.y));
+        else
+            return new HitInfo(false, null);
 
         return new HitInfo(true, intersect);
     }

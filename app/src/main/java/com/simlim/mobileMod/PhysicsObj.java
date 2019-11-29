@@ -1,11 +1,14 @@
 package com.simlim.mobileMod;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 
 public class PhysicsObj extends GameObject implements Collidable{
 
-    private float radius = 50;
+    private float radius = 30;
 
     private boolean hasGravity = true;
     private float gravScale = 10;
@@ -35,6 +38,18 @@ public class PhysicsObj extends GameObject implements Collidable{
         SetCenterY(center.y);
     }
 
+    @Override
+    public void Render(Canvas _canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.YELLOW);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(strokeWidth);
+
+        _canvas.drawCircle(center.x, center.y, radius, paint);
+//        _canvas.drawRect(rect, paint);
+
+    }
+
     public void Stop() {
         isKinematic = false;
         velocity.x = prevVel.x = 0;
@@ -43,6 +58,7 @@ public class PhysicsObj extends GameObject implements Collidable{
 
     public void Reflect(PointF normal) {
         normal = PointFOps.normalize(normal);
+
         float dot = PointFOps.dot(normal, velocity);
 
         if (normal != null && dot < 0) {
@@ -121,12 +137,12 @@ public class PhysicsObj extends GameObject implements Collidable{
 
     @Override
     public float GetPosX() {
-        return GetCenter().x;
+        return center.x;
     }
 
     @Override
     public float GetPosY() {
-        return GetCenter().y;
+        return center.y;
     }
 
     @Override
@@ -138,20 +154,20 @@ public class PhysicsObj extends GameObject implements Collidable{
     public void OnHit(Collidable _other) {
         if (_other instanceof Line) {
             Line line = (Line) _other;
-            //System.out.println("collided with a line");
-            HitInfo hitInfo = Collision.LineIntersect(line, new Line(GetCenter(), velocity));
+            HitInfo hitInfo = Collision.LineIntersect(line, new Line(center, PointFOps.add(center, velocity)));
             if (hitInfo.hit) {
                 //System.out.println("raycast hit");
-                if (PointFOps.distSqr(hitInfo.point, GetCenter()) < 200) {
+                if (PointFOps.distSqr(hitInfo.point, center) < radius * radius) {
                     //System.out.println("hitting the line");
+
                     //calculate normal
                     PointF normal = PointFOps.minus(line.getStart(), line.getEnd());
                     normal.set(-normal.y, normal.x);
-
-                    if (PointFOps.dot(normal, PointFOps.minus(GetCenter(), line.GetCenter())) < 0)
+                    if (PointFOps.dot(normal, PointFOps.minus(center, line.center)) < 0)
                         normal.set(-normal.x, -normal.y);
 
                     Reflect(normal);
+                    velocity = PointFOps.mul(velocity, 0.9f);
                 }
             }
         }

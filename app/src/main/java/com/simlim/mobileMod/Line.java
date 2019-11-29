@@ -52,6 +52,15 @@ public class Line extends GameObject implements Collidable {
 
     }
 
+    public void setCenter(PointF _center) {
+        PointF dir = PointFOps.normalize(PointFOps.minus(start, end));
+        if (dir == null) return;
+        dir = PointFOps.mul(dir, radius);
+        start = PointFOps.add(_center, dir);
+        end = PointFOps.minus(_center, dir);
+        center = _center;
+    }
+
     public PointF getStart() {
         return start;
     }
@@ -69,7 +78,7 @@ public class Line extends GameObject implements Collidable {
         valid = true;
         SetCenterX((start.x + end.x) * 0.5f);
         SetCenterY((start.y + end.y) * 0.5f);
-        radius = (float)Math.sqrt((double) PointFOps.distSqr(start, end));
+        radius = (float)Math.sqrt((double) PointFOps.distSqr(start, end)) * 0.5f;
         this.end = end;
     }
 

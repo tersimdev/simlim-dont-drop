@@ -10,9 +10,9 @@ import android.view.SurfaceView;
 
 public class GameObject implements EntityBase {
 
-    private PointF center = new PointF();
     private PointF halfSize = new PointF();
-    private Rect rect = new Rect();
+    protected PointF center = new PointF();
+    protected Rect rect = new Rect();
 
     public Paint.Style style = Paint.Style.FILL;
     public int color;
