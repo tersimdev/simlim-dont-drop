@@ -13,10 +13,14 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.api.Distribution;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePage extends Activity {
 
@@ -35,7 +39,19 @@ public class GamePage extends Activity {
         setContentView(R.layout.activity_game_scene);
         ConstraintLayout container = findViewById(R.id.container);
 
-        GameView gameView = new GameView(this);
+        List<View> childViews = new ArrayList<>();
+
+        TextView tmp;
+        tmp = findViewById(R.id.score);
+        childViews.add(tmp);
+        tmp = findViewById(R.id.highscore);
+        childViews.add(tmp);
+
+        for (View v : childViews) {
+            v.setElevation(1);
+        }
+
+        GameView gameView = new GameView(this, childViews);
         container.addView(gameView);
         container.setElevation(0);
     }

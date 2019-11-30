@@ -10,7 +10,9 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.service.quicksettings.Tile;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewDebug;
+import android.widget.TextView;
 
 import java.time.Clock;
 import java.util.ArrayList;
@@ -30,9 +32,14 @@ public class MainGameSceneState implements StateBase {
 
     private boolean isDown = false;
     private Line line = new Line();
+    private TextView scoreText, highscoreText;
     private float score = 0.f;
+    private float highscore = -1.f;
 
     private Pickup[] pickups = new Pickup[10];
+
+    public MainGameSceneState() {
+    }
 
     @Override
     public String GetName() {
@@ -41,6 +48,20 @@ public class MainGameSceneState implements StateBase {
 
     @Override
     public void OnEnter(SurfaceView _view) {
+
+        //get handles to other views
+        GameView gameView = (GameView) _view;
+        for (View v : gameView.childViews) {
+            if (v.getId() == R.id.score)
+                scoreText = (TextView) v;
+            else if (v.getId() == R.id.highscore)
+                highscoreText = (TextView) v;
+        }
+
+        //initialise scores
+        scoreText.setText(Integer.toString((int)score));
+        highscoreText.setText("0");
+
         width = _view.getWidth();
         height = _view.getHeight();
 
@@ -115,12 +136,13 @@ public class MainGameSceneState implements StateBase {
         }
 
         if (bounceTime <= timer) {
-            bounceTime = timer + 3.0f;
+            bounceTime = timer + 1.0f;
 //            for (Pickup go : pickups) {
 //                if (!go.active) {
 //                    go.active = true;
 //                }
 //            }
+            scoreText.setText(Integer.toString((int)score));
         }
 
         if (TouchManager.Instance.HasTouch()) {
@@ -138,6 +160,13 @@ public class MainGameSceneState implements StateBase {
         }
     }
 
+    //call me when game ends
+    private void OnGameEnd() {
+        if (score > highscore) {
+            highscore = score;
+            highscoreText.setText(Integer.toString((int)highscore));
+        }
+    }
 
 }
 

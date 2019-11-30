@@ -3,6 +3,10 @@ package com.simlim.mobileMod;
 import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Created by TanSiewLan2019
 // GameView is the SurfaceView
@@ -14,7 +18,10 @@ public class GameView extends SurfaceView {
     //Thread to be known for its existence
     private UpdateThread updateThread = new UpdateThread(this);
 
-    public GameView(Context _context)
+    //views from xml that i shld know of
+    public List<View> childViews;
+
+    public GameView(Context _context, List<View> _childViews)
     {
         super(_context);
         holder = getHolder();
@@ -44,6 +51,8 @@ public class GameView extends SurfaceView {
                 }
             });
         }
+
+        childViews = _childViews;
 
     }
 }
