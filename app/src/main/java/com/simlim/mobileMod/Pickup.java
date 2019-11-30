@@ -27,8 +27,9 @@ public class Pickup extends GameObject implements Collidable {
 
     @Override
     public void OnHit(Collidable _other) {
-        if (_other instanceof PhysicsObj && ((GameObject)_other).tag == "ball")
-        active = false;
-        gotten = true;
+        if (_other instanceof PhysicsObj && ((GameObject)_other).tag == "ball") {
+            active = false;
+            gotten = true;
+        }
     }
 }
