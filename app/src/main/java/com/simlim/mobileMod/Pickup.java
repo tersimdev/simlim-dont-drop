@@ -5,6 +5,7 @@ public class Pickup extends GameObject implements Collidable {
 
     private float radius = 50;
     public boolean gotten = false;
+    public Callback onHitCallBack = null;
 
     @Override
     public float GetPosX() {
@@ -30,6 +31,9 @@ public class Pickup extends GameObject implements Collidable {
         if (_other instanceof PhysicsObj && ((GameObject)_other).tag == "ball") {
             active = false;
             gotten = true;
+            if (onHitCallBack != null)
+                onHitCallBack.doThing();
+
         }
     }
 }

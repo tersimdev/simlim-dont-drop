@@ -20,11 +20,13 @@ public class GameView extends SurfaceView {
 
     //views from xml that i shld know of
     public List<View> childViews;
+    public Context context;
 
     public GameView(Context _context, List<View> _childViews)
     {
         super(_context);
         holder = getHolder();
+        context = _context;
 
         if (holder != null)
         {

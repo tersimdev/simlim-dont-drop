@@ -20,6 +20,8 @@ public class PhysicsObj extends GameObject implements Collidable{
 
     private boolean isKinematic = true;
 
+    public Callback onHitCallBack = null;
+
     @Override
     public void Update(float _dt) {
         super.Update(_dt);
@@ -168,6 +170,9 @@ public class PhysicsObj extends GameObject implements Collidable{
 
                     Reflect(normal);
                     velocity = PointFOps.mul(velocity, 0.9f);
+
+                    if (onHitCallBack != null)
+                        onHitCallBack.doThing();
                 }
             }
         }
