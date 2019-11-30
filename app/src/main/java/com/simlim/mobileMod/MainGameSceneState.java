@@ -10,6 +10,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.service.quicksettings.Tile;
 import android.view.SurfaceView;
+import android.view.ViewDebug;
 
 import java.time.Clock;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class MainGameSceneState implements StateBase {
         box.SetHeight(width * 0.9f);
         box.SetCenterX(width * 0.5f);
         box.SetCenterY(height * 0.5f);
+        box.tag = "boundary";
         EntityManager.Instance.AddEntity(box);
 
         PhysicsObj circle = new PhysicsObj();
@@ -59,6 +61,7 @@ public class MainGameSceneState implements StateBase {
         circle.SetHeight(width * 0.05f);
         circle.SetCenterX(width * 0.5f);
         circle.SetCenterY(height * 0.5f);
+        circle.tag = "ball";
         EntityManager.Instance.AddEntity(circle);
 
         line.style = Paint.Style.STROKE;
@@ -66,6 +69,7 @@ public class MainGameSceneState implements StateBase {
         line.strokeWidth = 10.f;
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
+        line.tag = "pLine";
         EntityManager.Instance.AddEntity(line);
 
         for (int i = 0; i < pickups.length; ++i) {
@@ -77,6 +81,7 @@ public class MainGameSceneState implements StateBase {
             go.SetCenterX(width * 0.5f);
             go.SetCenterY(height * 0.5f - 200);
             EntityManager.Instance.AddEntity(go);
+            go.tag = "pickup" + Integer.toString(i);
             go.active = false;
             pickups[i] = go;
         }

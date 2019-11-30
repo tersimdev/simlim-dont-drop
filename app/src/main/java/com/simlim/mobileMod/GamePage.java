@@ -14,6 +14,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.api.Distribution;
 
 public class GamePage extends Activity {
@@ -31,12 +33,11 @@ public class GamePage extends Activity {
         Instance = this;
 
         setContentView(R.layout.activity_game_scene);
-        LinearLayout container = findViewById(R.id.container);
+        ConstraintLayout container = findViewById(R.id.container);
 
         GameView gameView = new GameView(this);
         container.addView(gameView);
-//        container.removeView(gameView);
-//        setContentView(); // Surfaceview = GameView
+        container.setElevation(0);
     }
 
     @Override
