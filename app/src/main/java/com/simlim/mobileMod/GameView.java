@@ -1,5 +1,6 @@
 package com.simlim.mobileMod;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,11 +18,9 @@ public class GameView extends SurfaceView {
     //Thread to be known for its existence
     private UpdateThread updateThread = new UpdateThread(this);
 
-    //views from xml that i shld know of
-    public List<View> childViews;
     public Context context;
 
-    public GameView(Context _context, List<View> _childViews)
+    public GameView(Context _context)
     {
         super(_context);
         holder = getHolder();
@@ -52,9 +51,6 @@ public class GameView extends SurfaceView {
                 }
             });
         }
-
-        childViews = _childViews;
-
     }
 }
 

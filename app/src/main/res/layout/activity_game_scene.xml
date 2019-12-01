@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/score"
-        android:layout_width="171dp"
-        android:layout_height="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="1123"
-        android:textColor="@color/colorAccent"
+        android:textColor="#ffffff"
         android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,17 +23,30 @@
 
     <TextView
         android:id="@+id/highscore"
-        android:layout_width="358dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="HIGHEST : 99999"
-        android:textColor="@color/colorAccent"
+        android:textColor="#dddddd"
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.017" />
+
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_width="182dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="28dp"
+        android:onClick="HandleOnClick"
+        android:text="Share"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/drawaline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_leaderboard"
@@ -43,11 +56,22 @@
         android:onClick="HandleOnClick"
         android:text="Leaderboard"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/drawaline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/drawaline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="DRAW A LINE"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
-        app:layout_constraintVertical_bias="0.998" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

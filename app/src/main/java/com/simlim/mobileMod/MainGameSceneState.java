@@ -1,5 +1,6 @@
 package com.simlim.mobileMod;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Random;
 
 import static android.content.Context.VIBRATOR_SERVICE;
@@ -19,26 +22,21 @@ import static android.content.Context.VIBRATOR_SERVICE;
 // Created by TanSiewLan2019
 
 public class MainGameSceneState implements StateBase {
+    //init at OnEnter
+    private GamePage gamePage;
+    private GameView gameView;
+    private PointF center = new PointF();
+    private int width, height;
+    private boolean gameOver = true;
 
     private float timer = 0.0f;
     private float[] bounceTime = {0.5f,3.f};
-
-    //init at OnEnter
-    private PointF center = new PointF();
-    private int width, height;
-    private GameView gameView;
-    private boolean gameOver = true;
-
     private boolean isDown = false;
-    private Line line = new Line();
-    private PhysicsObj circle = new PhysicsObj();
-
-    private TextView scoreText, highscoreText;
     private int score = 0;
     private int highscore = -1;
 
-    private Button btnLeaderboard, btnShare;
-
+    private Line line = new Line();
+    private PhysicsObj circle = new PhysicsObj();
     private Pickup[] pickups = new Pickup[10];
 
     public MainGameSceneState() { }
@@ -53,18 +51,16 @@ public class MainGameSceneState implements StateBase {
 
         //get handles to other views
         gameView = (GameView) _view;
-        for (View v : gameView.childViews) {
-            if (v.getId() == R.id.score)
-                scoreText = (TextView) v;
-            else if (v.getId() == R.id.highscore)
-                highscoreText = (TextView) v;
-            else if (v.getId() == R.id.btn_leaderboard)
-                btnLeaderboard = (Button) v;
-        }
+        gamePage = (GamePage) gameView.context;
+
+        //hide and show views
+        gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
+        gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
+        gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
 
         //initialise scores
-        scoreText.setText(Integer.toString(score));
-        highscoreText.setText("0");
+        gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
+        gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, "0");
 
         width = _view.getWidth();
         height = _view.getHeight();
@@ -125,7 +121,7 @@ public class MainGameSceneState implements StateBase {
                 Vibrate();
                 if (tag.equals("pLine")) {
                     ++score;
-                    scoreText.setText(Integer.toString(score));
+                    gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                 } else if (tag.equals("boundary")) {
                     OnGameEnd();
                 }
@@ -242,7 +238,7 @@ public class MainGameSceneState implements StateBase {
         if (score > highscore) {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
-            highscoreText.setText(prefix + " " + Integer.toString(this.highscore));
+            gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(this.highscore));
         }
 
         circle.active = false;
@@ -252,11 +248,14 @@ public class MainGameSceneState implements StateBase {
             p.active = false;
         }
 
-        btnLeaderboard.setElevation(1);
+        gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
+        gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
+        gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
     }
 
     private void OnGameStart() {
         circle.setKinematic(true);
+        gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
         gameOver = false;
     }
 
@@ -267,8 +266,9 @@ public class MainGameSceneState implements StateBase {
         circle.Reset();
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);
+        gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
+        gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
     }
-
 }
 
 
