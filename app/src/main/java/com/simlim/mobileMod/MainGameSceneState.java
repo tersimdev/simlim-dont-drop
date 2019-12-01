@@ -118,6 +118,9 @@ public class MainGameSceneState implements StateBase {
                 if (tag.equals("pLine")) {
                     ++score;
                     gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
+                } else if (tag.equals("pickup")) {
+                    score += 2;
+                    gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                 } else if (tag.equals("boundary")) {
                     OnGameEnd();
                 }
@@ -139,7 +142,7 @@ public class MainGameSceneState implements StateBase {
             go.color = Color.BLUE;
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
-            go.tag = "pickup" + Integer.toString(i);
+            go.tag = "pickup";
             go.active = false;
             pickups[i] = go;
         }
@@ -164,13 +167,6 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.Update(_dt);
 
         timer += _dt;
-
-        for (int i = 0; i < pickups.length; ++i) {
-            if (pickups[i].gotten) {
-                pickups[i].gotten = false;
-                score += 10;
-            }
-        }
 
         if (bounceTime[0] < timer) {
             bounceTime[0] = timer + 1.0f;
