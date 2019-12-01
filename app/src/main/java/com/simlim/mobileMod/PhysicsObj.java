@@ -175,9 +175,28 @@ public class PhysicsObj extends GameObject implements Collidable{
                 }
             }
         }
-
     }
+
+
+    @Override
+    public void SetCenterX(float _x) {
+        center.x = _x;
+        rect.left = (int)(center.x - radius);
+        rect.right = (int)(center.x + radius);
+    }
+
+    @Override
+    public void SetCenterY(float _y) {
+        center.y = _y;
+        rect.top = (int)(center.y - radius);
+        rect.bottom = (int)(center.y + radius);
+    }
+
     public void SetRadius(float _radius) {
         radius = _radius;
+        rect.top = (int)(center.y - radius);
+        rect.bottom = (int)(center.y + radius);
+        rect.left = (int)(center.x - radius);
+        rect.right = (int)(center.x + radius);
     }
 }

@@ -30,7 +30,7 @@ public class MainGameSceneState implements StateBase {
     private int highscore = -1;
 
     private Line line = new Line();
-    private PhysicsObj circle = new PhysicsObj();
+    private Sprite circle = new Sprite();
     private Pickup[] pickups = new Pickup[10];
 
     public MainGameSceneState() { }
@@ -107,10 +107,15 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.AddEntity(right);
 
         circle.color = Color.WHITE;
-        circle.SetRadius(25.f);
+        circle.SetRadius(50.f);
         circle.setKinematic(false);
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);
+        circle.SetResourceId(R.drawable.smurf_sprite);
+        circle.animation.frames.add(new Keyframe(0.1f, 0, 0, 1, 1, 4, 4));
+        circle.animation.frames.add(new Keyframe(0.1f, 1, 0, 1, 1, 4, 4));
+        circle.animation.frames.add(new Keyframe(0.1f, 2, 0, 1, 1, 4, 4));
+        circle.animation.frames.add(new Keyframe(0.1f, 3, 0, 1, 1, 4, 4));
         circle.tag = "ball";
         circle.onHitCallBack = new Callback() {
             @Override
