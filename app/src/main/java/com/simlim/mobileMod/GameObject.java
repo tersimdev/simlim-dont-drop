@@ -10,6 +10,8 @@ import android.view.SurfaceView;
 
 public class GameObject implements EntityBase {
 
+    public String tag = "gameobject";
+
     private PointF halfSize = new PointF();
     protected PointF center = new PointF();
     protected Rect rect = new Rect();

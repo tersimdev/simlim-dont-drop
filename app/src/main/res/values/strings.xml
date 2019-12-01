@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Assignment</string>
+    <string name="highscore">Highest : </string>
 </resources>

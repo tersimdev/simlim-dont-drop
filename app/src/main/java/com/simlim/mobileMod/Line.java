@@ -63,7 +63,6 @@ public class Line extends GameObject implements Collidable {
 
     @Override
     public void OnHit(Collidable _other) {
-
     }
 
     public void setCenter(PointF _center) {

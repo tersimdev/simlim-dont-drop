@@ -10,4 +10,3 @@ public interface Collidable {
 
     void OnHit(Collidable _other);
 }
-
