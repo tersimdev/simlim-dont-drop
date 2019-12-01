@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +21,18 @@ import java.util.List;
 public class GamePage extends Activity {
 
     public static GamePage Instance = null;
+
+    public enum UI {
+        TXT_SCORE,
+        TXT_HSCORE,
+        BTN_LEADERBOARD,
+        BTN_SHARE,
+        TXT_DRAWLINE
+    };
+
+    private TextView scoreText, highscoreText;
+    private Button btnLeaderboard, btnShare;
+    private TextView drawALine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +47,19 @@ public class GamePage extends Activity {
         setContentView(R.layout.activity_game_scene);
         ConstraintLayout container = findViewById(R.id.container);
 
-        List<View> childViews = new ArrayList<>();
+        scoreText = findViewById(R.id.score);
+        highscoreText = findViewById(R.id.highscore);
+        btnLeaderboard = findViewById(R.id.btn_leaderboard);
+        btnShare = findViewById(R.id.btn_share);
+        drawALine = findViewById(R.id.drawaline);
 
-        TextView tmp;
-        tmp = findViewById(R.id.score);
-        childViews.add(tmp);
-        tmp = findViewById(R.id.highscore);
-        childViews.add(tmp);
-        tmp = findViewById(R.id.btn_leaderboard);
-        childViews.add(tmp);
+        scoreText.setElevation(1);
+        highscoreText.setElevation(1);
+        btnLeaderboard.setElevation(1);
+        btnShare.setElevation(1);
+        drawALine.setElevation(1);
 
-        for (View v : childViews) {
-            v.setElevation(1);
-        }
-
-        GameView gameView = new GameView(this, childViews);
+        GameView gameView = new GameView(this);
         container.addView(gameView);
         container.setElevation(0);
     }
@@ -77,6 +88,50 @@ public class GamePage extends Activity {
             startActivity(intent);
             return;
         }
+    }
+
+    public void UpdateUIText(final UI type, final String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (type) {
+                    case TXT_SCORE:
+                        scoreText.setText(text);
+                        break;
+                    case TXT_HSCORE:
+                        highscoreText.setText(text);
+                        break;
+                    case TXT_DRAWLINE:
+                        drawALine.setText(text);
+                        break;
+                }
+            }
+        });
+    }
+
+    public void ShowUI(final UI type, final boolean show) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (type) {
+                    case TXT_SCORE:
+                        scoreText.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                    case TXT_HSCORE:
+                        highscoreText.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                    case BTN_LEADERBOARD:
+                        btnLeaderboard.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                    case BTN_SHARE:
+                        btnShare.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                    case TXT_DRAWLINE:
+                        drawALine.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                }
+            }
+        });
     }
 }
 
