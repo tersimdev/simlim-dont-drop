@@ -135,11 +135,13 @@ public class MainGameSceneState implements StateBase {
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
         line.tag = "pLine";
         line.active = false;
+        line.setValid(false);
+        line.invalidCol = Color.DKGRAY;
         EntityManager.Instance.AddEntity(line);
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = Color.BLUE;
+            go.color = Color.GREEN;
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";
@@ -195,6 +197,8 @@ public class MainGameSceneState implements StateBase {
         } else {
             isDown = false;
         }
+
+        line.setValid(!isDown); //comment this line out if want line to collide w ball when drawing
     }
 
     private void SpawnPickup(float _x, float _y) {

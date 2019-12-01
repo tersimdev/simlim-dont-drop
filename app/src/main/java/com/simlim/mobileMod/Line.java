@@ -5,13 +5,13 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 public class Line extends GameObject implements Collidable {
-
-    public PointF start = new PointF();
-    public PointF end = new PointF();
-
     private float radius = 500;
 
-    private boolean valid = false;
+    private PointF start = new PointF();
+    private PointF end = new PointF();
+    private boolean valid = true;
+
+    public int invalidCol = color;
 
     Line () {}
 
@@ -22,9 +22,12 @@ public class Line extends GameObject implements Collidable {
 
     @Override
     public void Render(Canvas _canvas) {
+
+        int c = valid ? color : invalidCol;
+
         Paint paint = new Paint();
         paint.setStyle(style);
-        paint.setColor(color);
+        paint.setColor(c);
         paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
 
@@ -32,14 +35,14 @@ public class Line extends GameObject implements Collidable {
 
 
         paint = new Paint();
-        paint.setColor(color);
+        paint.setColor(c);
         paint.setAntiAlias(true);
 
         _canvas.drawCircle(start.x, start.y, strokeWidth, paint);
 
 
         paint = new Paint();
-        paint.setColor(color);
+        paint.setColor(c);
         paint.setAntiAlias(true);
 
         _canvas.drawCircle(end.x, end.y, strokeWidth, paint);
@@ -80,7 +83,6 @@ public class Line extends GameObject implements Collidable {
     }
 
     public void setStart(PointF start) {
-        valid = false;
         this.start = start;
     }
 
@@ -89,7 +91,6 @@ public class Line extends GameObject implements Collidable {
     }
 
     public void setEnd(PointF end) {
-        valid = true;
         SetCenterX((start.x + end.x) * 0.5f);
         SetCenterY((start.y + end.y) * 0.5f);
         radius = (float)Math.sqrt((double) PointFOps.distSqr(start, end)) * 0.5f;

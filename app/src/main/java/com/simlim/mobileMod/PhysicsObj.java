@@ -60,13 +60,13 @@ public class PhysicsObj extends GameObject implements Collidable{
         velocity.y = prevVel.y = 0;
     }
 
-    public void Reflect(PointF normal) {
+    public void Reflect(PointF normal, float multiplier) {
         normal = PointFOps.normalize(normal);
 
         float dot = PointFOps.dot(normal, velocity);
 
         if (normal != null && dot < 0) {
-            PointF resNormal2 = PointFOps.mul(normal, dot * 2.2f);
+            PointF resNormal2 = PointFOps.mul(normal, dot * (2.f + multiplier));
 
             prevVel = velocity = PointFOps.minus(velocity, resNormal2);
             isKinematic = true;
@@ -158,20 +158,17 @@ public class PhysicsObj extends GameObject implements Collidable{
     public void OnHit(Collidable _other) {
         if (_other instanceof Line) {
             Line line = (Line) _other;
-            HitInfo hitInfo = Collision.LineIntersect(line, new Line(center, PointFOps.add(center, velocity)));
-            if (hitInfo.hit) {
-                //System.out.println("raycast hit");
-                if (PointFOps.distSqr(hitInfo.point, center) < radius * radius) {
-                    //System.out.println("hitting the line");
-
+            if (line.isValid())
+            {
+                HitInfo hitInfo = Collision.LineIntersect(line, new Line(center, PointFOps.add(center, velocity)));
+                if (hitInfo.hit && PointFOps.distSqr(hitInfo.point, center) < radius * radius) {
                     //calculate normal
                     PointF normal = PointFOps.minus(line.getStart(), line.getEnd());
                     normal.set(-normal.y, normal.x);
                     if (PointFOps.dot(normal, PointFOps.minus(center, line.center)) < 0)
                         normal.set(-normal.x, -normal.y);
-
-                    Reflect(normal);
-                    velocity = PointFOps.mul(velocity, 1.2f);
+                    //reflect
+                    Reflect(normal, 0.2f);
 
                     if (onHitCallBack != null)
                         onHitCallBack.doThing(line.tag);
