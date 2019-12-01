@@ -5,7 +5,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Created by TanSiewLan2019

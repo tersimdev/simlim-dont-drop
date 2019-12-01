@@ -8,39 +8,21 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
-public class MainMenu extends Activity implements View.OnClickListener, StateBase {
-
-    private Button btn_start, btn_back;
-
+public class Leaderboard extends Activity implements StateBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.main_menu);
-
-        btn_start = findViewById(R.id.btn_start);
-        btn_back = findViewById(R.id.btn_back);
-
-        btn_start.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
+        setContentView(R.layout.activity_leaderboard);
     }
 
-    @Override
-    public void onClick(View v) {
+    public void BackToGame(View _v) {
         Intent intent = new Intent();
-
-        if (v == btn_start) {
-            intent.setClass(this, SplashPage.class);
-        }
-        else if (v == btn_back) {
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-        }
-
+        intent.setClass(this, GamePage.class);
+        StateManager.Instance.ChangeState("MainGame");
         startActivity(intent);
     }
 
@@ -62,7 +44,7 @@ public class MainMenu extends Activity implements View.OnClickListener, StateBas
 
     @Override
     public String GetName() {
-        return "Mainmenu";
+        return "Leaderboard";
     }
 
     @Override

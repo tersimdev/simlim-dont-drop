@@ -4,20 +4,15 @@ package com.simlim.mobileMod;
 // Create a GamePage is an activity class used to hold the GameView which will have a surfaceview
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.api.Distribution;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +41,8 @@ public class GamePage extends Activity {
         childViews.add(tmp);
         tmp = findViewById(R.id.highscore);
         childViews.add(tmp);
+        tmp = findViewById(R.id.btn_leaderboard);
+        childViews.add(tmp);
 
         for (View v : childViews) {
             v.setElevation(1);
@@ -70,6 +67,16 @@ public class GamePage extends Activity {
 
     public void backToMainMenu(View view) {
         StateManager.Instance.ChangeState("Mainmenu");
+    }
+
+    public void HandleOnClick(View _v) {
+        if (_v.getId() == R.id.btn_leaderboard) {
+            Intent intent = new Intent();
+            intent.setClass(this, Leaderboard.class);
+            StateManager.Instance.ChangeState("Leaderboard");
+            startActivity(intent);
+            return;
+        }
     }
 }
 

@@ -1,28 +1,17 @@
 package com.simlim.mobileMod;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.service.quicksettings.Tile;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewDebug;
+import android.widget.Button;
 import android.widget.TextView;
 
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import static android.content.Context.VIBRATOR_SERVICE;
@@ -48,6 +37,8 @@ public class MainGameSceneState implements StateBase {
     private int score = 0;
     private int highscore = -1;
 
+    private Button btnLeaderboard, btnShare;
+
     private Pickup[] pickups = new Pickup[10];
 
     public MainGameSceneState() { }
@@ -67,6 +58,8 @@ public class MainGameSceneState implements StateBase {
                 scoreText = (TextView) v;
             else if (v.getId() == R.id.highscore)
                 highscoreText = (TextView) v;
+            else if (v.getId() == R.id.btn_leaderboard)
+                btnLeaderboard = (Button) v;
         }
 
         //initialise scores
@@ -258,6 +251,8 @@ public class MainGameSceneState implements StateBase {
         for (Pickup p : pickups) {
             p.active = false;
         }
+
+        btnLeaderboard.setElevation(1);
     }
 
     private void OnGameStart() {
@@ -267,6 +262,8 @@ public class MainGameSceneState implements StateBase {
 
     private void OnGameReset() {
         score = 0;
+        line.setStart(new PointF(width * 0.3f, height * 0.7f));
+        line.setEnd(new PointF(width * 0.7f, height * 0.7f));
         circle.Reset();
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);

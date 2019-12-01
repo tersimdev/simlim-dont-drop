@@ -1,9 +1,7 @@
 package com.simlim.mobileMod;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 
 public class PhysicsObj extends GameObject implements Collidable{
