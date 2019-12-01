@@ -57,6 +57,8 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
+        if (highscore < 0)
+            gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
 
         //initialise scores
         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
@@ -251,6 +253,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
+        gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
     }
 
     private void OnGameStart() {
