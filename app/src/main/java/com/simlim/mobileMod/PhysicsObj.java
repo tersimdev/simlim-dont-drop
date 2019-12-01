@@ -20,8 +20,7 @@ public class PhysicsObj extends GameObject implements Collidable{
 
     public Callback onHitCallBack = null;
 
-    public void Reset() {
-        active = true;
+    public void ResetKinematic() {
         velocity.set(0.f, 0.f);
         prevVel.set(0.f, 0.f);
         force.set(0.f, 0.f);
