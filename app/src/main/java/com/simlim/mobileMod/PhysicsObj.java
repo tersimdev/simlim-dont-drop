@@ -172,7 +172,7 @@ public class PhysicsObj extends GameObject implements Collidable{
                         normal.set(-normal.x, -normal.y);
 
                     Reflect(normal);
-                    velocity = PointFOps.mul(velocity, 1.2f);
+                    velocity = PointFOps.mul(velocity, 1.1f);
 
                     if (onHitCallBack != null)
                         onHitCallBack.doThing(line.tag);
