@@ -35,19 +35,22 @@ public class MainGameSceneState implements StateBase {
     private float[] bounceTime = {0.5f,3.f};
 
     //init at OnEnter
-    int width, height;
-    GameView gameView;
+    private PointF center = new PointF();
+    private int width, height;
+    private GameView gameView;
+    private boolean gameOver = true;
 
     private boolean isDown = false;
     private Line line = new Line();
+    private PhysicsObj circle = new PhysicsObj();
+
     private TextView scoreText, highscoreText;
-    private float score = 0.f;
-    private float highscore = -1.f;
+    private int score = 0;
+    private int highscore = -1;
 
     private Pickup[] pickups = new Pickup[10];
 
-    public MainGameSceneState() {
-    }
+    public MainGameSceneState() { }
 
     @Override
     public String GetName() {
@@ -67,34 +70,72 @@ public class MainGameSceneState implements StateBase {
         }
 
         //initialise scores
-        scoreText.setText(Integer.toString((int)score));
+        scoreText.setText(Integer.toString(score));
         highscoreText.setText("0");
 
         width = _view.getWidth();
         height = _view.getHeight();
 
-        GameObject box = new GameObject();
-        box.style = Paint.Style.STROKE;
-        box.color = Color.RED;
-        box.strokeWidth = 10.f;
-        box.SetWidth(width * 0.9f);
-        box.SetHeight(width * 0.9f);
-        box.SetCenterX(width * 0.5f);
-        box.SetCenterY(height * 0.5f);
-        box.tag = "boundary";
-        EntityManager.Instance.AddEntity(box);
+        center.set(width * 0.5f, height * 0.5f);
+        final float size = width * 0.9f;
+        final float halfSize = size * 0.5f;
 
-        PhysicsObj circle = new PhysicsObj();
+        Line top = new Line();
+        top.tag = "boundary";
+        top.style = Paint.Style.STROKE;
+        top.color = Color.RED;
+        top.strokeWidth = 10.f;
+        top.setStart(new PointF(0.f, 0.f));
+        top.setEnd(new PointF(size, 0.f));
+        top.setCenter(new PointF(center.x, center.y - halfSize));
+        EntityManager.Instance.AddEntity(top);
+
+        Line bottom = new Line();
+        bottom.tag = "boundary";
+        bottom.style = Paint.Style.STROKE;
+        bottom.color = Color.RED;
+        bottom.strokeWidth = 10.f;
+        bottom.setStart(new PointF(0.f, 0.f));
+        bottom.setEnd(new PointF(size, 0.f));
+        bottom.setCenter(new PointF(center.x, center.y + halfSize));
+        EntityManager.Instance.AddEntity(bottom);
+
+        Line left = new Line();
+        left.tag = "boundary";
+        left.style = Paint.Style.STROKE;
+        left.color = Color.RED;
+        left.strokeWidth = 10.f;
+        left.setStart(new PointF(0.f, 0.f));
+        left.setEnd(new PointF(0.f, size));
+        left.setCenter(new PointF(center.x - halfSize, center.y));
+        EntityManager.Instance.AddEntity(left);
+
+        Line right = new Line();
+        right.tag = "boundary";
+        right.style = Paint.Style.STROKE;
+        right.color = Color.RED;
+        right.strokeWidth = 10.f;
+        right.setStart(new PointF(0.f, 0.f));
+        right.setEnd(new PointF(0.f, size));
+        right.setCenter(new PointF(center.x + halfSize, center.y));
+        EntityManager.Instance.AddEntity(right);
+
         circle.color = Color.WHITE;
-        circle.SetWidth(width * 0.05f);
-        circle.SetHeight(width * 0.05f);
-        circle.SetCenterX(width * 0.5f);
-        circle.SetCenterY(height * 0.5f);
+        circle.SetRadius(25.f);
+        circle.setKinematic(false);
+        circle.SetCenterX(center.x);
+        circle.SetCenterY(center.y);
         circle.tag = "ball";
         circle.onHitCallBack = new Callback() {
             @Override
-            public void doThing() {
+            public void doThing(String tag) {
                 Vibrate();
+                if (tag.equals("pLine")) {
+                    ++score;
+                    scoreText.setText(Integer.toString(score));
+                } else if (tag.equals("boundary")) {
+                    OnGameEnd();
+                }
             }
         };
         EntityManager.Instance.AddEntity(circle);
@@ -110,8 +151,7 @@ public class MainGameSceneState implements StateBase {
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
             go.color = Color.BLUE;
-            go.SetWidth(width * 0.05f);
-            go.SetHeight(width * 0.05f);
+            go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup" + Integer.toString(i);
             go.active = false;
@@ -129,8 +169,7 @@ public class MainGameSceneState implements StateBase {
     }
 
     @Override
-    public void Render(Canvas _canvas)
-    {
+    public void Render(Canvas _canvas) {
         EntityManager.Instance.Render(_canvas);
     }
 
@@ -138,7 +177,6 @@ public class MainGameSceneState implements StateBase {
     public void Update(float _dt) {
         EntityManager.Instance.Update(_dt);
 
-        score += _dt;
         timer += _dt;
 
         for (int i = 0; i < pickups.length; ++i) {
@@ -150,12 +188,13 @@ public class MainGameSceneState implements StateBase {
 
         if (bounceTime[0] < timer) {
             bounceTime[0] = timer + 1.0f;
-            scoreText.setText(Integer.toString((int)score));
         } else if (bounceTime[1] < timer) {
             bounceTime[1] = timer + 3.0f;
             Random rand = new Random();
             // * (0.7 - 0.3) + 0.3
-            SpawnPickup(width * (rand.nextFloat() * 0.4f + 0.3f), height * (rand.nextFloat() * 0.4f + 0.3f));
+            if (!gameOver) {
+                SpawnPickup(width * (rand.nextFloat() * 0.4f + 0.3f), height * (rand.nextFloat() * 0.4f + 0.3f));
+            }
         }
 
         if (TouchManager.Instance.HasTouch()) {
@@ -165,6 +204,11 @@ public class MainGameSceneState implements StateBase {
             if (!isDown) {
                 line.setStart(new PointF(x, y));
                 isDown = true;
+            }
+
+            if (gameOver) {
+                OnGameReset();
+                OnGameStart();
             }
 
             line.setEnd(new PointF(x, y));
@@ -182,6 +226,7 @@ public class MainGameSceneState implements StateBase {
             else
                 ref = go;
         }
+
         if (numActive < 5 && ref != null) {
             ref.active = true;
             ref.SetCenterX(_x);
@@ -198,16 +243,33 @@ public class MainGameSceneState implements StateBase {
 
         System.out.println("Vibrated");
     }
+
     //call me when game ends
     public void OnGameEnd() {
         if (score > highscore) {
             highscore = score;
-            highscoreText.setText(R.string.highscore + Integer.toString((int)highscore));
+            final String prefix = gameView.getResources().getString(R.string.highscore);
+            highscoreText.setText(prefix + " " + Integer.toString(this.highscore));
         }
+
+        circle.active = false;
+        gameOver = true;
 
         for (Pickup p : pickups) {
             p.active = false;
         }
+    }
+
+    private void OnGameStart() {
+        circle.setKinematic(true);
+        gameOver = false;
+    }
+
+    private void OnGameReset() {
+        score = 0;
+        circle.Reset();
+        circle.SetCenterX(center.x);
+        circle.SetCenterY(center.y);
     }
 
 }

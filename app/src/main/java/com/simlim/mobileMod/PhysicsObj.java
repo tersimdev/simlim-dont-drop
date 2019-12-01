@@ -22,6 +22,13 @@ public class PhysicsObj extends GameObject implements Collidable{
 
     public Callback onHitCallBack = null;
 
+    public void Reset() {
+        active = true;
+        velocity.set(0.f, 0.f);
+        prevVel.set(0.f, 0.f);
+        force.set(0.f, 0.f);
+    }
+
     @Override
     public void Update(float _dt) {
         super.Update(_dt);
@@ -48,8 +55,6 @@ public class PhysicsObj extends GameObject implements Collidable{
         paint.setStrokeWidth(strokeWidth);
 
         _canvas.drawCircle(center.x, center.y, radius, paint);
-//        _canvas.drawRect(rect, paint);
-
     }
 
     public void Stop() {
@@ -172,7 +177,7 @@ public class PhysicsObj extends GameObject implements Collidable{
                     velocity = PointFOps.mul(velocity, 1.2f);
 
                     if (onHitCallBack != null)
-                        onHitCallBack.doThing();
+                        onHitCallBack.doThing(line.tag);
                 }
             }
         }

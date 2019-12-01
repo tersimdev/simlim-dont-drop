@@ -4,5 +4,5 @@ import android.content.Context;
 
 public interface Callback {
 
-    public void doThing();
+    public void doThing(String tag);
 }

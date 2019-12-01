@@ -25,7 +25,7 @@ public class Line extends GameObject implements Collidable {
         Paint paint = new Paint();
         paint.setStyle(style);
         paint.setColor(color);
-        paint.setAntiAlias();
+        paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
 
         _canvas.drawLine(start.x, start.y, end.x, end.y, paint);
@@ -63,6 +63,7 @@ public class Line extends GameObject implements Collidable {
 
     @Override
     public void OnHit(Collidable _other) {
+
     }
 
     public void setCenter(PointF _center) {

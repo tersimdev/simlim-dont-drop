@@ -1,11 +1,24 @@
 package com.simlim.mobileMod;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 public class Pickup extends GameObject implements Collidable {
 
 
     private float radius = 50;
     public boolean gotten = false;
     public Callback onHitCallBack = null;
+
+    @Override
+    public void Render(Canvas _canvas) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(strokeWidth);
+
+        _canvas.drawCircle(center.x, center.y, radius, paint);
+    }
 
     @Override
     public float GetPosX() {
@@ -28,11 +41,12 @@ public class Pickup extends GameObject implements Collidable {
 
     @Override
     public void OnHit(Collidable _other) {
-        if (_other instanceof PhysicsObj && ((GameObject)_other).tag == "ball") {
+        String tag = ((GameObject)_other).tag;
+        if (_other instanceof PhysicsObj && tag == "ball") {
             active = false;
             gotten = true;
             if (onHitCallBack != null)
-                onHitCallBack.doThing();
+                onHitCallBack.doThing(tag);
 
         }
     }
