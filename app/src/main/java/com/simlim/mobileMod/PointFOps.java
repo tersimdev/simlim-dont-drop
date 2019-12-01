@@ -16,6 +16,11 @@ public class PointFOps {
         return ret;
     }
 
+    public static PointF mul(PointF lhs, PointF rhs){
+        PointF ret = new PointF(lhs.x * rhs.x, lhs.y * rhs.y);
+        return ret;
+    }
+
     public static  PointF add(PointF lhs, PointF rhs){
         PointF ret = new PointF(lhs.x + rhs.x, lhs.y + rhs.y);
         return ret;

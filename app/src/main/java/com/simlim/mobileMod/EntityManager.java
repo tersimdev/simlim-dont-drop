@@ -56,24 +56,27 @@ public class EntityManager {
         {
             EntityBase currEntity = entityList.get(i);
 
-            if (currEntity.GetActive() && currEntity instanceof Collidable)
-            {
-                Collidable first = (Collidable) currEntity;
+            if (currEntity.GetActive()) {
+                if (currEntity instanceof Collidable) {
+                    Collidable first = (Collidable) currEntity;
 
-                for (int j = i+1; j < entityList.size(); ++j)
-                {
-                    EntityBase otherEntity = entityList.get(j);
+                    for (int j = i + 1; j < entityList.size(); ++j) {
+                        EntityBase otherEntity = entityList.get(j);
 
-                    if (otherEntity.GetActive() && otherEntity instanceof Collidable)
-                    {
-                        Collidable second = (Collidable) otherEntity;
+                        if (otherEntity.GetActive() && otherEntity instanceof Collidable) {
+                            Collidable second = (Collidable) otherEntity;
 
-                        if (Collision.SphereToSphere(first.GetPosX(), first.GetPosY(), first.GetRadius(), second.GetPosX(), second.GetPosY(), second.GetRadius()))
-                        {
-                            first.OnHit(second);
-                            second.OnHit(first);
+                            if (Collision.SphereToSphere(first.GetPosX(), first.GetPosY(), first.GetRadius(), second.GetPosX(), second.GetPosY(), second.GetRadius())) {
+                                first.OnHit(second);
+                                second.OnHit(first);
+                            }
                         }
                     }
+                }
+
+                if (currEntity instanceof SpriteAnimation) {
+                    SpriteAnimation sprite = (SpriteAnimation)currEntity;
+                    sprite.UpdateAnimation(_dt);
                 }
             }
 
