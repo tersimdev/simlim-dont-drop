@@ -69,7 +69,6 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.AddEntity(line);
 
         for (int i = 0; i < pickups.length; ++i) {
-
             Pickup go = new Pickup();
             go.color = Color.BLUE;
             go.SetWidth(width * 0.05f);
@@ -80,6 +79,7 @@ public class MainGameSceneState implements StateBase {
             go.active = false;
             pickups[i] = go;
         }
+        
         pickups[0].active = true;
     }
 

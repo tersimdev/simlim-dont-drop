@@ -8,7 +8,7 @@ import android.graphics.PointF;
 
 public class PhysicsObj extends GameObject implements Collidable{
 
-    private float radius = 30;
+    private float radius = 25;
 
     private boolean hasGravity = true;
     private float gravScale = 10;
@@ -41,7 +41,7 @@ public class PhysicsObj extends GameObject implements Collidable{
     @Override
     public void Render(Canvas _canvas) {
         Paint paint = new Paint();
-        paint.setColor(Color.YELLOW);
+        paint.setColor(color);
         paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
 
@@ -167,7 +167,7 @@ public class PhysicsObj extends GameObject implements Collidable{
                         normal.set(-normal.x, -normal.y);
 
                     Reflect(normal);
-                    velocity = PointFOps.mul(velocity, 0.9f);
+//                    velocity = PointFOps.mul(velocity, 1.1f);
                 }
             }
         }

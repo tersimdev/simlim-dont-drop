@@ -25,10 +25,24 @@ public class Line extends GameObject implements Collidable {
         Paint paint = new Paint();
         paint.setStyle(style);
         paint.setColor(color);
-        paint.setAntiAlias(true);
+        paint.setAntiAlias();
         paint.setStrokeWidth(strokeWidth);
 
         _canvas.drawLine(start.x, start.y, end.x, end.y, paint);
+
+
+        paint = new Paint();
+        paint.setColor(color);
+        paint.setAntiAlias(true);
+
+        _canvas.drawCircle(start.x, start.y, strokeWidth, paint);
+
+
+        paint = new Paint();
+        paint.setColor(color);
+        paint.setAntiAlias(true);
+
+        _canvas.drawCircle(end.x, end.y, strokeWidth, paint);
     }
 
 
