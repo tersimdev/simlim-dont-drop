@@ -12,66 +12,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1123"
+        android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textSize="32dp"
+        android:textSize="69dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <TextView
         android:id="@+id/highscore"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:text="HIGHEST : 99999"
-        android:textColor="#dddddd"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.149"
+        android:textAlignment="center"
+        android:textColor="#cccccc"
+        android:textSize="26dp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_leaderboard"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/score"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toBottomOf="@+id/score" />
 
     <Button
         android:id="@+id/btn_share"
-        android:layout_width="182dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
         android:onClick="HandleOnClick"
-        android:text="Share"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/drawaline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/score" />
 
     <Button
         android:id="@+id/btn_leaderboard"
-        android:layout_width="182dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
         android:onClick="HandleOnClick"
-        android:text="Leaderboard"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/drawaline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_share"
+        app:layout_constraintTop_toBottomOf="@+id/score" />
 
     <TextView
         android:id="@+id/drawaline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="112dp"
         android:text="DRAW A LINE"
         android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textSize="45dp"
+        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

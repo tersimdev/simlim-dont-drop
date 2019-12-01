@@ -56,7 +56,8 @@ public class MainGameSceneState implements StateBase {
 
         //initialise scores
         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
-        gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, "0");
+        final String prefix = gameView.getResources().getString(R.string.highscore);
+        gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(highscore));
 
         width = _view.getWidth();
         height = _view.getHeight();
@@ -148,9 +149,6 @@ public class MainGameSceneState implements StateBase {
             go.active = false;
             pickups[i] = go;
         }
-        pickups[0].SetCenterX(width * 0.5f);
-        pickups[0].SetCenterY(height * 0.5f - 200);
-        pickups[0].active = true;
     }
 
     @Override
@@ -245,13 +243,13 @@ public class MainGameSceneState implements StateBase {
         if (score > highscore) {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
-            gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(this.highscore));
-            gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
+            gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(highscore));
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
+        gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
     }
 
     private void OnGameStart() {
@@ -261,6 +259,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
+        gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
 
         circle.setKinematic(true);
         line.active = true;
