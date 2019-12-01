@@ -1,6 +1,5 @@
 package com.simlim.mobileMod;
 
-import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,11 +8,6 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -57,6 +51,8 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
+        if (highscore < 0)
+            gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
 
         //initialise scores
         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
@@ -127,6 +123,9 @@ public class MainGameSceneState implements StateBase {
                 if (tag.equals("pLine")) {
                     ++score;
                     gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
+                } else if (tag.equals("pickup")) {
+                    score += 2;
+                    gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                 } else if (tag.equals("boundary")) {
                     OnGameEnd();
                 }
@@ -140,14 +139,17 @@ public class MainGameSceneState implements StateBase {
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
         line.tag = "pLine";
+        line.active = false;
+        line.setValid(false);
+        line.invalidCol = Color.DKGRAY;
         EntityManager.Instance.AddEntity(line);
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = Color.BLUE;
+            go.color = Color.GREEN;
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
-            go.tag = "pickup" + Integer.toString(i);
+            go.tag = "pickup";
             go.active = false;
             pickups[i] = go;
         }
@@ -173,13 +175,6 @@ public class MainGameSceneState implements StateBase {
 
         timer += _dt;
 
-        for (int i = 0; i < pickups.length; ++i) {
-            if (pickups[i].gotten) {
-                pickups[i].gotten = false;
-                score += 10;
-            }
-        }
-
         if (bounceTime[0] < timer) {
             bounceTime[0] = timer + 1.0f;
         } else if (bounceTime[1] < timer) {
@@ -198,17 +193,17 @@ public class MainGameSceneState implements StateBase {
             if (!isDown) {
                 line.setStart(new PointF(x, y));
                 isDown = true;
-            }
 
-            if (gameOver) {
-                OnGameReset();
-                OnGameStart();
+                if (gameOver)
+                    OnGameStart();
             }
 
             line.setEnd(new PointF(x, y));
         } else {
             isDown = false;
         }
+
+        line.setValid(!isDown); //comment this line out if want line to collide w ball when drawing
     }
 
     private void SpawnPickup(float _x, float _y) {
@@ -240,17 +235,23 @@ public class MainGameSceneState implements StateBase {
 
     //call me when game ends
     public void OnGameEnd() {
+        gameOver = true;
+
+        circle.ResetKinematic();
+        circle.SetCenterX(center.x);
+        circle.SetCenterY(center.y);
+        circle.setKinematic(false);
+
+        line.active = false;
+        for (Pickup p : pickups) {
+            p.active = false;
+        }
+
         if (score > highscore) {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
             gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(this.highscore));
-        }
-
-        circle.active = false;
-        gameOver = true;
-
-        for (Pickup p : pickups) {
-            p.active = false;
+            gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
@@ -259,20 +260,15 @@ public class MainGameSceneState implements StateBase {
     }
 
     private void OnGameStart() {
-        circle.setKinematic(true);
-        gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
         gameOver = false;
-    }
-
-    private void OnGameReset() {
         score = 0;
-        line.setStart(new PointF(width * 0.3f, height * 0.7f));
-        line.setEnd(new PointF(width * 0.7f, height * 0.7f));
-        circle.Reset();
-        circle.SetCenterX(center.x);
-        circle.SetCenterY(center.y);
+
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
+        gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
+
+        circle.setKinematic(true);
+        line.active = true;
     }
 }
 

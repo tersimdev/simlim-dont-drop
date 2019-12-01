@@ -36,19 +36,24 @@ public class Collision {
 
     public static HitInfo LineIntersect(Line line1, Line line2) {
 
-        float denominator = (line1.start.x - line1.end.x) * (line2.start.y - line2.end.y) - (line1.start.y - line1.end.y) * (line2.start.x - line2.end.x);
+        PointF start1 = line1.getStart();
+        PointF end1 = line1.getEnd();
+        PointF start2 = line2.getStart();
+        PointF end2 = line2.getEnd();
+
+        float denominator = (start1.x - end1.x) * (start2.y - end2.y) - (start1.y - end1.y) * (start2.x - end2.x);
 
         if (denominator < EPSILON && denominator > -EPSILON) //lines are parallel
             return new HitInfo(false, null);
 
-        float t = ((line1.start.x - line2.start.x) * (line2.start.y - line2.end.y) - (line1.start.y - line2.start.y) * (line2.start.x - line2.end.x)) / denominator;
-        float u = ((line1.start.x - line1.end.x) * (line1.start.y - line2.start.y) - (line1.start.y - line1.end.y) * (line1.start.x - line2.start.x)) / denominator;
+        float t = ((start1.x - start2.x) * (start2.y - end2.y) - (start1.y - start2.y) * (start2.x - end2.x)) / denominator;
+        float u = ((start1.x - end1.x) * (start1.y - start2.y) - (start1.y - end1.y) * (start1.x - start2.x)) / denominator;
 
         PointF intersect = null;
         if (t >= 0 && t <= 1)
-            intersect = new PointF(line1.start.x + t * (line1.end.x - line1.start.x), line1.start.y + t * (line1.end.y - line1.start.y));
+            intersect = new PointF(start1.x + t * (end1.x - start1.x), start1.y + t * (end1.y - start1.y));
         else if (u >= 0 && u <= 1)
-            intersect = new PointF(line2.start.x + u * (line2.end.x - line2.start.x), line2.start.y + u * (line2.end.y - line2.start.y));
+            intersect = new PointF(start2.x + u * (end2.x - start2.x), start2.y + u * (end2.y - start2.y));
         else
             return new HitInfo(false, null);
 
