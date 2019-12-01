@@ -241,6 +241,7 @@ public class MainGameSceneState implements StateBase {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
             gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(this.highscore));
+            gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
         }
 
         circle.active = false;
@@ -253,7 +254,6 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
-        gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
     }
 
     private void OnGameStart() {
