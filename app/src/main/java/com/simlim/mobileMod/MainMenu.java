@@ -35,8 +35,7 @@ public class MainMenu extends Activity implements View.OnClickListener, StateBas
 
         if (v == btn_start) {
             intent.setClass(this, SplashPage.class);
-        }
-        else if (v == btn_back) {
+        } else if (v == btn_back) {
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
         }

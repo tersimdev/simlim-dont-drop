@@ -68,15 +68,15 @@ public class MainGameSceneState implements StateBase {
         final float halfSize = size * 0.5f;
 
         GameObject back = new GameObject();
-        back.color = Color.parseColor("#0A0909");
+        back.color = Color.parseColor("#190000");
         back.rect.top = (int)(center.y - halfSize);
         back.rect.bottom = (int)(center.y + halfSize);
         back.rect.left = (int)(center.x - halfSize);
         back.rect.right = (int)(center.x + halfSize);
         EntityManager.Instance.AddEntity(back);
 
-        int borderColor = Color.parseColor("#DA1706");
-        float borderWidth = 10.f;
+        int borderColor = Color.parseColor("#9F0101");
+        float borderWidth = 20.f;
 
         Line top = new Line();
         top.tag = "boundary";
@@ -84,7 +84,7 @@ public class MainGameSceneState implements StateBase {
         top.color = borderColor;
         top.strokeWidth = borderWidth;
         top.setStart(new PointF(0.f, 0.f));
-        top.setEnd(new PointF(size, 0.f));
+        top.setEnd(new PointF(size + borderWidth, 0.f));
         top.setCenter(new PointF(center.x, center.y - halfSize));
         EntityManager.Instance.AddEntity(top);
 
@@ -94,7 +94,7 @@ public class MainGameSceneState implements StateBase {
         bottom.color = borderColor;
         bottom.strokeWidth = borderWidth;
         bottom.setStart(new PointF(0.f, 0.f));
-        bottom.setEnd(new PointF(size, 0.f));
+        bottom.setEnd(new PointF(size + borderWidth, 0.f));
         bottom.setCenter(new PointF(center.x, center.y + halfSize));
         EntityManager.Instance.AddEntity(bottom);
 
@@ -104,7 +104,7 @@ public class MainGameSceneState implements StateBase {
         left.color = borderColor;
         left.strokeWidth = borderWidth;
         left.setStart(new PointF(0.f, 0.f));
-        left.setEnd(new PointF(0.f, size));
+        left.setEnd(new PointF(0.f, size + borderWidth));
         left.setCenter(new PointF(center.x - halfSize, center.y));
         EntityManager.Instance.AddEntity(left);
 
@@ -114,7 +114,7 @@ public class MainGameSceneState implements StateBase {
         right.color = borderColor;
         right.strokeWidth = borderWidth;
         right.setStart(new PointF(0.f, 0.f));
-        right.setEnd(new PointF(0.f, size));
+        right.setEnd(new PointF(0.f, size + borderWidth));
         right.setCenter(new PointF(center.x + halfSize, center.y));
         EntityManager.Instance.AddEntity(right);
 
@@ -152,7 +152,7 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.AddEntity(circle);
 
         line.style = Paint.Style.STROKE;
-        line.color = Color.WHITE;
+        line.color = Color.parseColor("#fdfef9");
         line.strokeWidth = 10.f;
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
@@ -164,7 +164,7 @@ public class MainGameSceneState implements StateBase {
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = Color.parseColor("#31959E");
+            go.color = Color.parseColor("#35c499");
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";

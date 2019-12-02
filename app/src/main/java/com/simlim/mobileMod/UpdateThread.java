@@ -72,7 +72,7 @@ public class UpdateThread extends Thread {
                 synchronized (holder)
                 {
                     // Fill the background color to reset
-                    canvas.drawColor(Color.parseColor("#DA1706"));
+                    canvas.drawColor(Color.parseColor("#9F0101"));
 
                     StateManager.Instance.Render(canvas);
                 }

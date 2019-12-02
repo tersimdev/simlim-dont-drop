@@ -3,8 +3,13 @@ package com.simlim.mobileMod;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.view.SurfaceView;
+
+import static java.lang.Math.abs;
 
 public class Sprite extends PhysicsObj implements SpriteAnimation {
 
@@ -25,6 +30,32 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
     @Override
     public void Render(Canvas _canvas) {
         _canvas.drawBitmap(bmp, uv, rect, null);
+
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.argb(0.5f, 1.f, 1.f, 1.f));
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(5.f);
+
+        final PointF velocity = PointFOps.mul(getVelocity(), 0.25f);
+        PointF normal = new PointF(velocity.y, velocity.x);
+        normal = PointFOps.normalize(normal);
+
+        final float trailCount = 4;
+
+        if (normal != null) {
+            for (float i = -trailCount; i <= trailCount; ++i) {
+                final float dist = (trailCount + 1 - abs(i)) / trailCount;
+                paint.setColor(Color.argb(dist, 1.f, 1.f, 1.f));
+
+                final float displacement = i / trailCount * GetRadius();
+                final PointF start = PointFOps.add(GetCenter(), PointFOps.mul(normal, displacement));
+                final PointF offset = PointFOps.minus(start, PointFOps.mul(velocity, dist));
+                _canvas.drawLine(start.x, start.y, offset.x, offset.y, paint);
+            }
+        }
+
     }
 
     @Override
