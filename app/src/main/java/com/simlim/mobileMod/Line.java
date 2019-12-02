@@ -79,7 +79,7 @@ public class Line extends GameObject implements Collidable {
     public void setEnd(PointF end) {
         SetCenterX((start.x + end.x) * 0.5f);
         SetCenterY((start.y + end.y) * 0.5f);
-        radius = (float)Math.sqrt((double) PointFOps.distSqr(start, end)) * 0.5f;
+        radius = (float)Math.sqrt((double) PointFOps.lenSqr(start, end)) * 0.5f;
         this.end = end;
     }
 

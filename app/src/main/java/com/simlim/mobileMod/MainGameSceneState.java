@@ -244,10 +244,17 @@ public class MainGameSceneState implements StateBase {
     }
 
     public void Vibrate() {
+        final short dura;
+        final float speedSqr = PointFOps.lenSqr(circle.getVelocity());
+        if (speedSqr >= circle.maxSpeedHard * circle.maxSpeedHard * 0.81f)
+            dura = 50;
+        else
+            dura = 10;
+
         if (Build.VERSION.SDK_INT >= 26) {
-            ((Vibrator) gameView.context.getSystemService(VIBRATOR_SERVICE)).vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
+            ((Vibrator) gameView.context.getSystemService(VIBRATOR_SERVICE)).vibrate(VibrationEffect.createOneShot(dura, VibrationEffect.DEFAULT_AMPLITUDE));
         } else {
-            ((Vibrator) gameView.context.getSystemService(VIBRATOR_SERVICE)).vibrate(150);
+            ((Vibrator) gameView.context.getSystemService(VIBRATOR_SERVICE)).vibrate(dura);
         }
 
         System.out.println("Vibrated");
