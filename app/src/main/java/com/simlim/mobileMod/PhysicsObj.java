@@ -19,6 +19,7 @@ public class PhysicsObj extends GameObject implements Collidable{
     private boolean isKinematic = true;
 
     public Callback onHitCallBack = null;
+    public final float maxSpeedHard = 888.f;
 
     public void ResetKinematic() {
         velocity.set(0.f, 0.f);
@@ -37,6 +38,9 @@ public class PhysicsObj extends GameObject implements Collidable{
 
         if (hasGravity)
             velocity = PointFOps.add(velocity, PointFOps.mul(gravity, gravScale * _dt));
+
+        if (PointFOps.lenSqr(velocity) > maxSpeedHard * maxSpeedHard)
+            velocity = PointFOps.mul(PointFOps.normalize(velocity), maxSpeedHard);
 
         PointF center = GetCenter();
         center = PointFOps.add(center, PointFOps.mul(velocity, _dt));
@@ -161,7 +165,7 @@ public class PhysicsObj extends GameObject implements Collidable{
             if (line.isValid())
             {
                 HitInfo hitInfo = Collision.LineIntersect(line, new Line(center, PointFOps.add(center, velocity)));
-                if (hitInfo.hit && PointFOps.distSqr(hitInfo.point, center) < radius * radius) {
+                if (hitInfo.hit && PointFOps.lenSqr(hitInfo.point, center) < radius * radius) {
                     //calculate normal
                     PointF normal = PointFOps.minus(line.getStart(), line.getEnd());
                     normal.set(-normal.y, normal.x);
