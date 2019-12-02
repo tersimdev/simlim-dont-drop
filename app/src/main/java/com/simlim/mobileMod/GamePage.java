@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -66,6 +67,20 @@ public class GamePage extends Activity {
         GameView gameView = new GameView(this);
         container.addView(gameView);
         container.setElevation(0);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            StateManager.Instance.ChangeState("MainGame");
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
