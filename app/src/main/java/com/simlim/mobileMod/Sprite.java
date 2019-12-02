@@ -49,8 +49,6 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
             uv.bottom = uv.top + (int)((float) height * currentFrame.uvSize.y);
             uv.left = (int)((float) width * currentFrame.uvPosition.x);
             uv.right = uv.left + (int)((float) width * currentFrame.uvSize.x);
-
-            System.out.println("New frame : " + uv);
         }
     }
 

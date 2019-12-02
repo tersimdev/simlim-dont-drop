@@ -51,6 +51,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
+
         if (highscore < 0)
             gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
 
@@ -182,6 +183,10 @@ public class MainGameSceneState implements StateBase {
             if (!gameOver) {
                 SpawnPickup(width * (rand.nextFloat() * 0.4f + 0.3f), height * (rand.nextFloat() * 0.4f + 0.3f));
             }
+        }
+
+        if (gameOver) {
+            gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, (int)(timer) % 2 == 0);
         }
 
         if (TouchManager.Instance.HasTouch()) {
