@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.SurfaceView;
+
+import androidx.annotation.RequiresApi;
 
 import static java.lang.Math.abs;
 
@@ -27,6 +30,7 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
         bmp = BitmapFactory.decodeResource(holder.getResources(), resourceId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void Render(Canvas _canvas) {
         _canvas.drawBitmap(bmp, uv, rect, null);
