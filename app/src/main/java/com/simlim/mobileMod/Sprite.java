@@ -39,12 +39,14 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
         paint.setStrokeWidth(5.f);
 
         final PointF velocity = PointFOps.mul(getVelocity(), 0.25f);
-        PointF normal = new PointF(velocity.y, velocity.x);
-        normal = PointFOps.normalize(normal);
 
-        final float trailCount = 4;
+        if (!PointFOps.isEqual(velocity, 0,0)) {
 
-        if (normal != null) {
+            PointF normal = new PointF(velocity.y, velocity.x);
+            normal = PointFOps.normalize(normal);
+
+            final float trailCount = 4;
+
             for (float i = -trailCount; i <= trailCount; ++i) {
                 final float dist = (trailCount + 1 - abs(i)) / trailCount;
                 paint.setColor(Color.argb(dist, 1.f, 1.f, 1.f));
@@ -54,6 +56,7 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
                 final PointF offset = PointFOps.minus(start, PointFOps.mul(velocity, dist));
                 _canvas.drawLine(start.x, start.y, offset.x, offset.y, paint);
             }
+
         }
 
     }

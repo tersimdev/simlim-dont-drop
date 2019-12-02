@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/splash"
+    android:background="#ff0000"
     tools:context=".SplashPage">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="206dp"
-        android:layout_height="67dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="LOADING"
+        android:fontFamily="@font/fffforwa"
+        android:text="@string/company"
         android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="40dp"
+        android:textColor="#ffaa00"
+        android:textSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -26,11 +28,11 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="89dp"
-        android:layout_height="66dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:indeterminateBehavior="cycle"
         android:indeterminateDuration="3"
-        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

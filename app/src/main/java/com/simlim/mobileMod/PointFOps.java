@@ -60,6 +60,14 @@ public class PointFOps {
         return null;
     }
 
+    public static boolean isEqual(PointF pt1, PointF pt2) {
+        return pt1.x == pt2.x && pt1.y == pt2.y;
+    }
+
+    public static boolean isEqual(PointF pt1, float valX, float valY) {
+        return pt1.x == valX && pt1.y == valY;
+    }
+
     public static boolean inRange(PointF p1, PointF p2, PointF point) {
         PointF min = new PointF();
         PointF max = new PointF();
