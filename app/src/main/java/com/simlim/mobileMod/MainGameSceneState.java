@@ -155,7 +155,7 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.AddEntity(circle);
 
         line.style = Paint.Style.STROKE;
-        line.color = ResourcesCompat.getColor(gameView.getResources(), R.color.WHITE, null);
+        line.color = ResourcesCompat.getColor(gameView.getResources(), R.color.TEXT, null);
         line.strokeWidth = 10.f;
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
@@ -167,7 +167,7 @@ public class MainGameSceneState implements StateBase {
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = ResourcesCompat.getColor(gameView.getResources(), R.color.POWERUP, null);
+            go.color = ResourcesCompat.getColor(gameView.getResources(), R.color.ACCENT, null);
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";
