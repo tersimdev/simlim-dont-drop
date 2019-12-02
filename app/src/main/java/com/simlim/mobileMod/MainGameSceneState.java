@@ -67,11 +67,22 @@ public class MainGameSceneState implements StateBase {
         final float size = width * 0.9f;
         final float halfSize = size * 0.5f;
 
+        GameObject back = new GameObject();
+        back.color = Color.parseColor("#0A0909");
+        back.rect.top = (int)(center.y - halfSize);
+        back.rect.bottom = (int)(center.y + halfSize);
+        back.rect.left = (int)(center.x - halfSize);
+        back.rect.right = (int)(center.x + halfSize);
+        EntityManager.Instance.AddEntity(back);
+
+        int borderColor = Color.parseColor("#DA1706");
+        float borderWidth = 10.f;
+
         Line top = new Line();
         top.tag = "boundary";
         top.style = Paint.Style.STROKE;
-        top.color = Color.RED;
-        top.strokeWidth = 10.f;
+        top.color = borderColor;
+        top.strokeWidth = borderWidth;
         top.setStart(new PointF(0.f, 0.f));
         top.setEnd(new PointF(size, 0.f));
         top.setCenter(new PointF(center.x, center.y - halfSize));
@@ -80,8 +91,8 @@ public class MainGameSceneState implements StateBase {
         Line bottom = new Line();
         bottom.tag = "boundary";
         bottom.style = Paint.Style.STROKE;
-        bottom.color = Color.RED;
-        bottom.strokeWidth = 10.f;
+        bottom.color = borderColor;
+        bottom.strokeWidth = borderWidth;
         bottom.setStart(new PointF(0.f, 0.f));
         bottom.setEnd(new PointF(size, 0.f));
         bottom.setCenter(new PointF(center.x, center.y + halfSize));
@@ -90,8 +101,8 @@ public class MainGameSceneState implements StateBase {
         Line left = new Line();
         left.tag = "boundary";
         left.style = Paint.Style.STROKE;
-        left.color = Color.RED;
-        left.strokeWidth = 10.f;
+        left.color = borderColor;
+        left.strokeWidth = borderWidth;
         left.setStart(new PointF(0.f, 0.f));
         left.setEnd(new PointF(0.f, size));
         left.setCenter(new PointF(center.x - halfSize, center.y));
@@ -100,8 +111,8 @@ public class MainGameSceneState implements StateBase {
         Line right = new Line();
         right.tag = "boundary";
         right.style = Paint.Style.STROKE;
-        right.color = Color.RED;
-        right.strokeWidth = 10.f;
+        right.color = borderColor;
+        right.strokeWidth = borderWidth;
         right.setStart(new PointF(0.f, 0.f));
         right.setEnd(new PointF(0.f, size));
         right.setCenter(new PointF(center.x + halfSize, center.y));
@@ -112,19 +123,24 @@ public class MainGameSceneState implements StateBase {
         circle.setKinematic(false);
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);
-        circle.SetResourceId(R.drawable.smurf_sprite);
-        circle.animation.frames.add(new Keyframe(0.1f, 0, 0, 1, 1, 4, 4));
-        circle.animation.frames.add(new Keyframe(0.1f, 1, 0, 1, 1, 4, 4));
-        circle.animation.frames.add(new Keyframe(0.1f, 2, 0, 1, 1, 4, 4));
-        circle.animation.frames.add(new Keyframe(0.1f, 3, 0, 1, 1, 4, 4));
+        circle.SetResourceId(R.drawable.sprites);
+        for (int y = 0; y < 4; ++y) {
+            for (int x = 0; x < 4; ++x) {
+                circle.animation.frames.add(new Keyframe(1.f, x, y, 1, 1, 4, 4));
+            }
+        }
+
         circle.tag = "ball";
         circle.onHitCallBack = new Callback() {
             @Override
-            public void doThing(String tag) {
+            public void doThing(GameObject target) {
+                String tag = target.tag;
+
                 Vibrate();
                 if (tag.equals("pLine")) {
                     ++score;
                     gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
+                    target.active = false;
                 } else if (tag.equals("pickup")) {
                     score += 2;
                     gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
@@ -148,7 +164,7 @@ public class MainGameSceneState implements StateBase {
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = Color.GREEN;
+            go.color = Color.parseColor("#31959E");
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";
@@ -194,6 +210,7 @@ public class MainGameSceneState implements StateBase {
             final float y = TouchManager.Instance.GetPosY();
 
             if (!isDown) {
+                line.active = true;
                 line.setStart(new PointF(x, y));
                 isDown = true;
 

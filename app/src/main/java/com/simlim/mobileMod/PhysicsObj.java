@@ -9,7 +9,7 @@ public class PhysicsObj extends GameObject implements Collidable{
     private float radius = 25;
 
     private boolean hasGravity = true;
-    private float gravScale = 10;
+    private float gravScale = 50;
     private float mass = 1;
     private PointF gravity = new PointF(0, 9.8f);
     private PointF velocity = new PointF(0, 0);
@@ -168,10 +168,10 @@ public class PhysicsObj extends GameObject implements Collidable{
                     if (PointFOps.dot(normal, PointFOps.minus(center, line.center)) < 0)
                         normal.set(-normal.x, -normal.y);
                     //reflect
-                    Reflect(normal, 0.2f);
+                    Reflect(normal, 0.5f);
 
                     if (onHitCallBack != null)
-                        onHitCallBack.doThing(line.tag);
+                        onHitCallBack.doThing(line);
                 }
             }
         }
