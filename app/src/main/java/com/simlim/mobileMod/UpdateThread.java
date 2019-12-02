@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
 
+import androidx.core.content.res.ResourcesCompat;
+
 public class UpdateThread extends Thread {
 
     static final long targetFPS = 60;
@@ -72,7 +74,7 @@ public class UpdateThread extends Thread {
                 synchronized (holder)
                 {
                     // Fill the background color to reset
-                    canvas.drawColor(Color.parseColor("#9F0101"));
+                    canvas.drawColor(ResourcesCompat.getColor(view.getResources(), R.color.MAIN, null));
 
                     StateManager.Instance.Render(canvas);
                 }
