@@ -11,6 +11,8 @@ import android.view.SurfaceView;
 
 import java.util.Random;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import static android.content.Context.VIBRATOR_SERVICE;
 
 // Created by TanSiewLan2019
@@ -68,14 +70,15 @@ public class MainGameSceneState implements StateBase {
         final float halfSize = size * 0.5f;
 
         GameObject back = new GameObject();
-        back.color = Color.parseColor("#190000");
+        back.color = ResourcesCompat.getColor(gameView.getResources(), R.color.BLACK, null);//
         back.rect.top = (int)(center.y - halfSize);
         back.rect.bottom = (int)(center.y + halfSize);
         back.rect.left = (int)(center.x - halfSize);
         back.rect.right = (int)(center.x + halfSize);
         EntityManager.Instance.AddEntity(back);
 
-        int borderColor = Color.parseColor("#9F0101");
+
+        int borderColor = ResourcesCompat.getColor(gameView.getResources(), R.color.MAIN, null);
         float borderWidth = 20.f;
 
         Line top = new Line();
@@ -152,7 +155,7 @@ public class MainGameSceneState implements StateBase {
         EntityManager.Instance.AddEntity(circle);
 
         line.style = Paint.Style.STROKE;
-        line.color = Color.parseColor("#fdfef9");
+        line.color = ResourcesCompat.getColor(gameView.getResources(), R.color.WHITE, null);
         line.strokeWidth = 10.f;
         line.setStart(new PointF(width * 0.3f, height * 0.7f));
         line.setEnd(new PointF(width * 0.7f, height * 0.7f));
@@ -164,7 +167,7 @@ public class MainGameSceneState implements StateBase {
 
         for (int i = 0; i < pickups.length; ++i) {
             Pickup go = new Pickup();
-            go.color = Color.parseColor("#35c499");
+            go.color = ResourcesCompat.getColor(gameView.getResources(), R.color.POWERUP, null);
             go.SetRadius(20);
             EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";
@@ -202,7 +205,11 @@ public class MainGameSceneState implements StateBase {
         }
 
         if (gameOver) {
-            gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, (int)(timer) % 2 == 0);
+            if ((int)(timer) % 2 == 0) {
+                gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.WHITE);
+            } else {
+                gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.GRAY);
+            }
         }
 
         if (TouchManager.Instance.HasTouch()) {

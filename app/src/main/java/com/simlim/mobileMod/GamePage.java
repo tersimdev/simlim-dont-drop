@@ -5,6 +5,7 @@ package com.simlim.mobileMod;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -104,6 +105,26 @@ public class GamePage extends Activity {
                         break;
                     case TXT_DRAWLINE:
                         drawALine.setText(text);
+                        break;
+                }
+            }
+        });
+    }
+
+
+    public void UpdateUITextColor(final UI type, final int color) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (type) {
+                    case TXT_SCORE:
+                        scoreText.setTextColor(color);
+                        break;
+                    case TXT_HSCORE:
+                        highscoreText.setTextColor(color);
+                        break;
+                    case TXT_DRAWLINE:
+                        drawALine.setTextColor(color);
                         break;
                 }
             }
