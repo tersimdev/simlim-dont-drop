@@ -25,6 +25,9 @@ public class GamePage extends Activity {
 
     public static GamePage Instance = null;
 
+    private GameView gameView;
+    private ConstraintLayout container;
+
     public enum UI {
         TXT_SCORE,
         TXT_HSCORE,
@@ -50,7 +53,7 @@ public class GamePage extends Activity {
         Instance = this;
 
         setContentView(R.layout.activity_game_scene);
-        ConstraintLayout container = findViewById(R.id.container);
+        container = findViewById(R.id.container);
 
         scoreText = findViewById(R.id.score);
         highscoreText = findViewById(R.id.highscore);
@@ -64,7 +67,18 @@ public class GamePage extends Activity {
         btnShare.setElevation(1);
         drawALine.setElevation(1);
 
-        GameView gameView = new GameView(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        container.removeView(gameView);
+    }
+
+    @Override
+        protected void onResume() {
+        super.onResume();
+        gameView = new GameView(this);
         container.addView(gameView);
         container.setElevation(0);
     }
@@ -75,7 +89,6 @@ public class GamePage extends Activity {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
-            StateManager.Instance.ChangeState("MainGame");
             startActivity(intent);
             return true;
         }
