@@ -39,8 +39,9 @@ public class PhysicsObj extends GameObject implements Collidable{
         if (hasGravity)
             velocity = PointFOps.add(velocity, PointFOps.mul(gravity, gravScale * _dt));
 
-        if (PointFOps.lenSqr(velocity) > maxSpeedHard * maxSpeedHard)
-            velocity = PointFOps.mul(PointFOps.normalize(velocity), maxSpeedHard);
+        final float velLen = PointFOps.len(velocity);
+        if (velLen > maxSpeedHard)
+            velocity = PointFOps.mul(PointFOps.mul(velocity, 1.f / velLen), maxSpeedHard);
 
         PointF center = GetCenter();
         center = PointFOps.add(center, PointFOps.mul(velocity, _dt));

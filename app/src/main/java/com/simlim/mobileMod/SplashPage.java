@@ -10,7 +10,7 @@ import android.view.WindowManager;
 public class SplashPage extends Activity {
 
     protected boolean active = true;
-    protected int splashTime = 0;
+    protected int splashTime = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,8 @@ public class SplashPage extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_page);
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         Thread splashThread = new Thread() {
             @Override
@@ -38,11 +40,11 @@ public class SplashPage extends Activity {
 
                 }
                 finally {
-                    finish();
                     Intent i = new Intent(SplashPage.this, GamePage.class);
 
                     StateManager.Instance.ChangeState("MainGame");
                     startActivity(i);
+                    finish();
                 }
             }
         };

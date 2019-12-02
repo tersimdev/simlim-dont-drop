@@ -4,10 +4,10 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="MAIN">#9F0101</color>
+<!--    <color name="MAIN">#9F0101</color>-->
+    <color name="MAIN">#666666</color>
     <color name="BLACK">#190000</color>
-    <color name="WHITE">#FDFCFA</color>
-    <color name="IMPORTANT">#F7A039</color>
-    <color name="POWERUP">#35C499</color>
+    <color name="TEXT">#FDFCFA</color>
+    <color name="ACCENT">#F7A039</color>
 
 </resources>

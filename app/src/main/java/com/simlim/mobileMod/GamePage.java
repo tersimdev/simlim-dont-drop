@@ -44,6 +44,8 @@ public class GamePage extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE); // Hide titlebar
         getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);  // Hide topbar
 
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         Instance = this;
 
         setContentView(R.layout.activity_game_scene);
