@@ -7,6 +7,7 @@ public class Pickup extends GameObject implements Collidable {
 
 
     private float radius = 50;
+    public Callback onHitCallBack = null;
 
     @Override
     public void Render(Canvas _canvas) {
@@ -41,6 +42,10 @@ public class Pickup extends GameObject implements Collidable {
     public void OnHit(Collidable _other) {
         String tag = ((GameObject)_other).tag;
         if (_other instanceof PhysicsObj && tag == "ball")
+        {
             active = false;
+            if (onHitCallBack != null)
+                onHitCallBack.doThing((GameObject) _other);
+        }
     }
 }

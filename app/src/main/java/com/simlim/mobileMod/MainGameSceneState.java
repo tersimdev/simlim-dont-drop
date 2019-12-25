@@ -138,16 +138,13 @@ public class MainGameSceneState implements StateBase {
         circle.onHitCallBack = new Callback() {
             @Override
             public void doThing(GameObject target) {
-                String tag = target.tag;
+                final String tag = target.tag;
 
                 Vibrate();
                 if (tag.equals("pLine")) {
                     ++score;
                     gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                     target.active = false;
-                } else if (tag.equals("pickup")) {
-                    score += 2;
-                    gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                 } else if (tag.equals("boundary")) {
                     OnGameEnd();
                 }
@@ -170,10 +167,18 @@ public class MainGameSceneState implements StateBase {
             Pickup go = new Pickup();
             go.color = ResourcesCompat.getColor(gameView.getResources(), R.color.ACCENT, null);
             go.SetRadius(20);
-            EntityManager.Instance.AddEntity(go);
             go.tag = "pickup";
             go.active = false;
+            go.onHitCallBack = new Callback() {
+                @Override
+                public void doThing(GameObject target) {
+                    Vibrate();
+                    score += 2;
+                    gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
+                }
+            };
             pickups[i] = go;
+            EntityManager.Instance.AddEntity(pickups[i]);
         }
     }
 
@@ -269,7 +274,7 @@ public class MainGameSceneState implements StateBase {
             ((Vibrator) gameView.context.getSystemService(VIBRATOR_SERVICE)).vibrate(dura);
         }
 
-        System.out.println("Vibrated");
+        System.out.println("Vibrated for " + dura + "ms");
     }
 
     //call me when game ends
