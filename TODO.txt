@@ -1,0 +1,4 @@
+audio manager
+pausing
+show dialog box when quitting
+fix the scoreballs not adding score
