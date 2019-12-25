@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-public class PhysicsObj extends GameObject implements Collidable{
+public class PhysicsObj extends GameObject implements Collidable {
 
     private float radius = 25;
 
@@ -181,7 +181,6 @@ public class PhysicsObj extends GameObject implements Collidable{
             }
         }
     }
-
 
     @Override
     public void SetCenterX(float _x) {

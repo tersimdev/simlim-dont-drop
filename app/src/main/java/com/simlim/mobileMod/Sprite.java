@@ -20,6 +20,8 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
     private Bitmap bmp = null;
     private int resourceId;
 
+    public boolean trail = true;
+
     public SpriteAnimationData animation = new SpriteAnimationData();
     public Rect uv = new Rect();
 
@@ -33,33 +35,33 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void Render(Canvas _canvas) {
+        if (trail) {
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(((int) (0.5 * 0xff) & 0xff) << 24 | (0x00ffffff));
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(5.f);
 
+            final PointF velocity = PointFOps.mul(getVelocity(), 0.25f);
 
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(((int)(0.5 * 0xff) & 0xff) << 24 | (0x00ffffff));
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(5.f);
+            if (!PointFOps.isEqual(velocity, 0, 0)) {
 
-        final PointF velocity = PointFOps.mul(getVelocity(), 0.25f);
+                PointF normal = new PointF(velocity.y, velocity.x);
+                normal = PointFOps.normalize(normal);
 
-        if (!PointFOps.isEqual(velocity, 0,0)) {
+                final float trailCount = 4;
 
-            PointF normal = new PointF(velocity.y, velocity.x);
-            normal = PointFOps.normalize(normal);
+                for (float i = -trailCount; i <= trailCount; ++i) {
+                    final float dist = (trailCount + 1 - abs(i)) / trailCount;
+                    paint.setColor(((int) (dist * 0xff) & 0xff) << 24 | (0x00ffffff));
 
-            final float trailCount = 4;
+                    final float displacement = i / trailCount * GetRadius();
+                    final PointF start = PointFOps.add(GetCenter(), PointFOps.mul(normal, displacement));
+                    final PointF offset = PointFOps.minus(start, PointFOps.mul(velocity, dist));
+                    _canvas.drawLine(start.x, start.y, offset.x, offset.y, paint);
+                }
 
-            for (float i = -trailCount; i <= trailCount; ++i) {
-                final float dist = (trailCount + 1 - abs(i)) / trailCount;
-                paint.setColor(((int)(dist * 0xff) & 0xff) << 24 | (0x00ffffff));
-
-                final float displacement = i / trailCount * GetRadius();
-                final PointF start = PointFOps.add(GetCenter(), PointFOps.mul(normal, displacement));
-                final PointF offset = PointFOps.minus(start, PointFOps.mul(velocity, dist));
-                _canvas.drawLine(start.x, start.y, offset.x, offset.y, paint);
             }
-
         }
 
         _canvas.drawBitmap(bmp, uv, rect, null);
