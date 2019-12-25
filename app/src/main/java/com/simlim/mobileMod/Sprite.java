@@ -33,12 +33,11 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void Render(Canvas _canvas) {
-        _canvas.drawBitmap(bmp, uv, rect, null);
 
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.argb(0.5f, 1.f, 1.f, 1.f));
+        paint.setColor(((int)(0.5 * 0xff) & 0xff) << 24 | (0x00ffffff));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(5.f);
 
@@ -53,7 +52,7 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
 
             for (float i = -trailCount; i <= trailCount; ++i) {
                 final float dist = (trailCount + 1 - abs(i)) / trailCount;
-                paint.setColor(Color.argb(dist, 1.f, 1.f, 1.f));
+                paint.setColor(((int)(dist * 0xff) & 0xff) << 24 | (0x00ffffff));
 
                 final float displacement = i / trailCount * GetRadius();
                 final PointF start = PointFOps.add(GetCenter(), PointFOps.mul(normal, displacement));
@@ -63,6 +62,7 @@ public class Sprite extends PhysicsObj implements SpriteAnimation {
 
         }
 
+        _canvas.drawBitmap(bmp, uv, rect, null);
     }
 
     @Override

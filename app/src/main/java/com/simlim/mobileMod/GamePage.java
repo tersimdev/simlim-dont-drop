@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +62,10 @@ public class GamePage extends Activity {
         btnShare = findViewById(R.id.btn_share);
         drawALine = findViewById(R.id.drawaline);
 
-        scoreText.setElevation(1);
-        highscoreText.setElevation(1);
-        btnLeaderboard.setElevation(1);
-        btnShare.setElevation(1);
-        drawALine.setElevation(1);
+        final int childSize = container.getChildCount();
+        for (int i = 0; i < childSize; ++i) {
+            container.getChildAt(i).setElevation(1);
+        }
 
     }
 
@@ -79,8 +79,14 @@ public class GamePage extends Activity {
         protected void onResume() {
         super.onResume();
         gameView = new GameView(this);
-        container.addView(gameView);
-        container.setElevation(0);
+        gameView.setId(View.generateViewId());
+        gameView.setElevation(0);
+        container.addView(gameView, 0);
+        final int id = gameView.getId();
+        ConstraintSet c = new ConstraintSet();
+        c.clone(container);
+        c.connect(id, ConstraintSet.START, container.getId(), ConstraintSet.START);
+        c.applyTo(container);
     }
 
     @Override
@@ -118,6 +124,10 @@ public class GamePage extends Activity {
             intent.setClass(this, Leaderboard.class);
             StateManager.Instance.ChangeState("Leaderboard");
             startActivity(intent);
+            return;
+        }
+        else if (_v.getId() == R.id.btn_pause) {
+            GameSystem.Instance.TogglePause();
             return;
         }
     }

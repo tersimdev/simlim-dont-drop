@@ -34,6 +34,11 @@ public class GameSystem {
         isPaused = _newIsPaused;
     }
 
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+    }
+
     public boolean GetIsPaused()
     {
         return isPaused;
