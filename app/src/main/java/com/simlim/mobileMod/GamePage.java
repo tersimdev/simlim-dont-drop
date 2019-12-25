@@ -4,6 +4,8 @@ package com.simlim.mobileMod;
 // Create a GamePage is an activity class used to hold the GameView which will have a surfaceview
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -42,6 +44,8 @@ public class GamePage extends Activity {
     private Button btnLeaderboard, btnShare, btnPause;
     private TextView drawALine;
 
+    private AlertDialog quitDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,27 @@ public class GamePage extends Activity {
             container.getChildAt(i).setElevation(1);
         }
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Quit Game?");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        quitDialog = builder.create();
     }
 
     @Override
@@ -92,16 +117,8 @@ public class GamePage extends Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        quitDialog.show();
     }
 
     @Override

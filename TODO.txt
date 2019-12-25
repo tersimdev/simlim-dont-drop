@@ -1,3 +1,2 @@
 audio manager
 show that it is paused by rendering an overlay
-show dialog box when quitting

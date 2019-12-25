@@ -30,16 +30,11 @@ public class Leaderboard extends Activity implements StateBase {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            Intent intent = new Intent();
-            intent.setClass(this, GamePage.class);
-            StateManager.Instance.ChangeState("MainGame");
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.setClass(this, GamePage.class);
+        StateManager.Instance.ChangeState("MainGame");
+        startActivity(intent);
     }
 
     @Override

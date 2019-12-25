@@ -75,4 +75,9 @@ public class SplashPage extends Activity {
     protected void onStop() {
         super.onStop();
     }
+
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
 }
