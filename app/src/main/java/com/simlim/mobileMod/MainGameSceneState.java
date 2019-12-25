@@ -52,6 +52,7 @@ public class MainGameSceneState implements StateBase {
         //hide and show views
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
+        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
 
         if (highscore < 0)
@@ -295,6 +296,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
         gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
+        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
     }
 
     private void OnGameStart() {
@@ -305,6 +307,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
         gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
+        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, true);
 
         circle.setKinematic(true);
         line.active = true;

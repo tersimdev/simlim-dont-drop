@@ -34,11 +34,12 @@ public class GamePage extends Activity {
         TXT_HSCORE,
         BTN_LEADERBOARD,
         BTN_SHARE,
+        BTN_PAUSE,
         TXT_DRAWLINE
     };
 
     private TextView scoreText, highscoreText;
-    private Button btnLeaderboard, btnShare;
+    private Button btnLeaderboard, btnShare, btnPause;
     private TextView drawALine;
 
     @Override
@@ -60,6 +61,7 @@ public class GamePage extends Activity {
         highscoreText = findViewById(R.id.highscore);
         btnLeaderboard = findViewById(R.id.btn_leaderboard);
         btnShare = findViewById(R.id.btn_share);
+        btnPause = findViewById(R.id.btn_pause);
         drawALine = findViewById(R.id.drawaline);
 
         final int childSize = container.getChildCount();
@@ -187,6 +189,9 @@ public class GamePage extends Activity {
                         break;
                     case BTN_SHARE:
                         btnShare.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                        break;
+                    case BTN_PAUSE:
+                        btnPause.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
                         break;
                     case TXT_DRAWLINE:
                         drawALine.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
