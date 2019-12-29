@@ -316,6 +316,8 @@ public class MainGameSceneState implements StateBase {
 
         circle.setKinematic(true);
         line.active = true;
+
+        AudioManager.Instance.PlayAudio(R.raw.correct, 1);
     }
 }
 
