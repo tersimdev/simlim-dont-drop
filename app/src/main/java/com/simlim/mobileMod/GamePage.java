@@ -5,11 +5,18 @@ package com.simlim.mobileMod;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,11 +47,31 @@ public class GamePage extends Activity {
         TXT_DRAWLINE
     };
 
+    //UI
     private TextView scoreText, highscoreText;
     private Button btnLeaderboard, btnShare, btnPause;
     private TextView drawALine;
 
+    //alert for exit
     private AlertDialog quitDialog;
+
+    //Motion sensing
+    private SensorManager sensorManager;
+    private Sensor gravSensor;
+    private SensorEventListener gravSensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            //Log.d("MY_APP", Double.toString(event.values[0]) + "," + Double.toString(event.values[1])+ "," + Double.toString(event.values[2]));
+            gravity.set(-event.values[0], event.values[1]);
+            System.out.println(gravity);
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            //Log.d("MY_APP", sensor.toString() + " - " + accuracy);
+        }
+    };
+    private PointF gravity = new PointF(0, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +121,16 @@ public class GamePage extends Activity {
                 });
 
         quitDialog = builder.create();
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        gravSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         container.removeView(gameView);
+        sensorManager.unregisterListener(gravSensorListener);
     }
 
     @Override
@@ -114,6 +145,7 @@ public class GamePage extends Activity {
         c.clone(container);
         c.connect(id, ConstraintSet.START, container.getId(), ConstraintSet.START);
         c.applyTo(container);
+        sensorManager.registerListener(gravSensorListener, gravSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -216,6 +248,10 @@ public class GamePage extends Activity {
                 }
             }
         });
+    }
+
+    public PointF UpdateGravity() {
+        return gravity;
     }
 }
 
