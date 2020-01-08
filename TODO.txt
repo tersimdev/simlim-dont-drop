@@ -1,2 +1,4 @@
-audio manager
 show that it is paused by rendering an overlay
+saving local highscore
+fix accelerometer not changing immediately
+save highscore to firestore using device id
