@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.Typeface;
@@ -73,6 +74,11 @@ public class GamePage extends Activity {
     };
     private PointF gravity = new PointF(0, 1);
 
+    //shared prefs
+    private final String SHARED_PREF_ID = "GameSaveData";
+    private SharedPreferences sharedPref = null;
+    private SharedPreferences.Editor sharedPrefEditor = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +130,8 @@ public class GamePage extends Activity {
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gravSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+
+        sharedPref = getSharedPreferences(SHARED_PREF_ID, 0);
     }
 
     @Override
@@ -252,6 +260,29 @@ public class GamePage extends Activity {
 
     public PointF UpdateGravity() {
         return gravity;
+    }
+
+    public void SaveEditBegin() {
+        if (sharedPrefEditor != null)
+            return;
+        sharedPrefEditor = sharedPref.edit();
+    }
+
+    public void SaveEditEnd() {
+        if (sharedPrefEditor == null)
+            return;
+        sharedPrefEditor.commit();
+        sharedPrefEditor = null;
+    }
+
+    public void SaveInt(String _key, int _val) {
+        if (sharedPrefEditor == null)
+            return;
+        sharedPrefEditor.putInt(_key, _val);
+    }
+
+    public int GetSavedInt(String _key, int _defVal) {
+        return sharedPref.getInt(_key, _defVal);
     }
 }
 

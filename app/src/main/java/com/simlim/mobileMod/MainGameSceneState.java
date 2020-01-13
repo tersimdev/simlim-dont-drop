@@ -78,7 +78,7 @@ public class MainGameSceneState implements StateBase {
     public void Update(float _dt) {
 
         //abit weird, gravity changes slowly, maybe use a diff sensor?
-        //circle.setGravity(gamePage.UpdateGravity());
+        circle.setGravity(gamePage.UpdateGravity());
 
         if (GameSystem.Instance.GetIsPaused())
             return;
@@ -128,6 +128,9 @@ public class MainGameSceneState implements StateBase {
     }
 
     private void InitGame() {
+
+        //initialise highscore from sharedPrefs
+        highscore = gamePage.GetSavedInt("highscore", -999);
 
         //hide and show views
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
@@ -321,6 +324,10 @@ public class MainGameSceneState implements StateBase {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
             gamePage.UpdateUIText(GamePage.UI.TXT_HSCORE, prefix + " " + Integer.toString(highscore));
+            //save highscore
+            gamePage.SaveEditBegin();
+            gamePage.SaveInt("highscore", highscore);
+            gamePage.SaveEditEnd();
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
