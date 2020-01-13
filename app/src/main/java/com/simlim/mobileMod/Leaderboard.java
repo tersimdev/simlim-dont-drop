@@ -118,7 +118,7 @@ public class Leaderboard extends Activity implements StateBase {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Toast.makeText(Leaderboard.this, "Success", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Leaderboard.this, "Success", Toast.LENGTH_SHORT).show();
                         List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot snapshot : documents) {
                             Map<String, Object> data = snapshot.getData();
