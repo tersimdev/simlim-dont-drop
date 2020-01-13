@@ -328,6 +328,8 @@ public class MainGameSceneState implements StateBase {
             gamePage.SaveEditBegin();
             gamePage.SaveInt("highscore", highscore);
             gamePage.SaveEditEnd();
+
+            gamePage.SaveToFireStore("unnamed", highscore);
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);

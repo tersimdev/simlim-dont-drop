@@ -9,28 +9,40 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GamePage extends Activity {
 
@@ -64,7 +76,7 @@ public class GamePage extends Activity {
         public void onSensorChanged(SensorEvent event) {
             //Log.d("MY_APP", Double.toString(event.values[0]) + "," + Double.toString(event.values[1])+ "," + Double.toString(event.values[2]));
             gravity.set(-event.values[0], event.values[1]);
-            System.out.println(gravity);
+            //System.out.println(gravity);
         }
 
         @Override
@@ -78,6 +90,8 @@ public class GamePage extends Activity {
     private final String SHARED_PREF_ID = "GameSaveData";
     private SharedPreferences sharedPref = null;
     private SharedPreferences.Editor sharedPrefEditor = null;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,11 +197,9 @@ public class GamePage extends Activity {
             intent.setClass(this, Leaderboard.class);
             StateManager.Instance.ChangeState("Leaderboard");
             startActivity(intent);
-            return;
         }
         else if (_v.getId() == R.id.btn_pause) {
             GameSystem.Instance.TogglePause();
-            return;
         }
     }
 
@@ -283,6 +295,13 @@ public class GamePage extends Activity {
 
     public int GetSavedInt(String _key, int _defVal) {
         return sharedPref.getInt(_key, _defVal);
+    }
+
+    public void SaveToFireStore(String _name, int _score) {
+        Map<String, Object> saveObj = new HashMap<>();
+        saveObj.put("name", UpdateThread.deviceId);
+        saveObj.put("score", _score);
+        db.collection("HighScores").document(UpdateThread.deviceId).set(saveObj);
     }
 }
 

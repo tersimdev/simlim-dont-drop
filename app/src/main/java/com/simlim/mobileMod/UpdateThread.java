@@ -9,6 +9,10 @@ import android.view.SurfaceHolder;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 public class UpdateThread extends Thread {
 
     static final long targetFPS = 60;
@@ -18,10 +22,19 @@ public class UpdateThread extends Thread {
 
     private boolean isRunning = false;
 
+    public static String deviceId;
+
     public UpdateThread(GameView _view)
     {
         view = _view;
         holder = _view.getHolder();
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                deviceId = instanceIdResult.getId();
+            }
+        });
 
         StateManager.Instance.Init(_view);
         EntityManager.Instance.Init(_view);
