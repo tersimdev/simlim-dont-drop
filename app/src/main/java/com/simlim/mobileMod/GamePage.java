@@ -63,7 +63,7 @@ public class GamePage extends Activity {
         public void onSensorChanged(SensorEvent event) {
             //Log.d("MY_APP", Double.toString(event.values[0]) + "," + Double.toString(event.values[1])+ "," + Double.toString(event.values[2]));
             gravity.set(-event.values[0], event.values[1]);
-            System.out.println(gravity);
+//            System.out.println(gravity);
         }
 
         @Override
