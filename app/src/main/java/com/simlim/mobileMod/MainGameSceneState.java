@@ -1,23 +1,17 @@
 package com.simlim.mobileMod;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.SurfaceView;
 
-import java.util.Random;
-
 import androidx.core.content.res.ResourcesCompat;
+
+import java.util.Random;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -40,6 +34,8 @@ public class MainGameSceneState implements StateBase {
     private Line line = new Line();
     private Sprite circle = new Sprite();
     private Pickup[] pickups = new Pickup[10];
+
+    private ParticleEmitter emitter = new ParticleEmitter();
 
     public MainGameSceneState() { }
 
@@ -224,6 +220,10 @@ public class MainGameSceneState implements StateBase {
                     final String tag = target.tag;
 
                     Vibrate();
+
+                    emitter.gravity.set(circle.getVelocity().x * -1.5f, circle.getVelocity().y * -1.5f);
+                    emitter.Spawn(50, circle.center);
+
                     if (tag.equals("pLine")) {
                         ++score;
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
@@ -270,6 +270,17 @@ public class MainGameSceneState implements StateBase {
                 EntityManager.Instance.AddEntity(pickups[i]);
             }
         }
+
+        emitter.angleRange = 180.f;
+        emitter.speed = 100.f;
+        emitter.speedRange = 100.f;
+        emitter.lifetime = 0.5f;
+        emitter.lifetimeRange = 0.1f;
+        emitter.startRadius = 10.f;
+        emitter.startRadiusRange = 5.f;
+        emitter.endRadius = 0.f;
+        emitter.positionRange.set(10.f, 10.f);
+        emitter.color = Color.WHITE;// ResourcesCompat.getColor(gameView.getResources(), R.color, null);
     }
 
     private void SpawnPickup(float _x, float _y) {

@@ -1,12 +1,8 @@
 package com.simlim.mobileMod;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-
-import java.util.List;
 
 // Created by TanSiewLan2019
 // GameView is the SurfaceView

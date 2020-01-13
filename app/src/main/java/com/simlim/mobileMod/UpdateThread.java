@@ -4,7 +4,6 @@ package com.simlim.mobileMod;
 // Need a delicated thread to run Surfaceview's update method
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.SurfaceHolder;
 
 import androidx.core.content.res.ResourcesCompat;
