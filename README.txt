@@ -11,21 +11,22 @@ Vibration (based on velocity)
 Physics (the ball)
 Collision (Raycast)
 Score (using callbacks)
+Accelerometer (change gravity direction)
+Pausing
+Online Leaderboard (using Firebase)
  
 James
 Particles (Trail)
 Controls (Drawing of Line)
 Screenflow (fixed app reload)
 Sprite Animation (encapsulated code)
-
+More Particles
 
 
 TaskList (Not Done):
 
-Accelerometer (change gravity direction)
-Online Leaderboard (using Firebase)
+show that it is paused by rendering an overlay
 Share button
-More Particles
 Camera Shake
 More gameplay features - pickups/powerups
 	dampeners, size increase, speed increase, random walls
