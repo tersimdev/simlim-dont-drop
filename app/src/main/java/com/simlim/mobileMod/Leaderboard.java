@@ -65,6 +65,7 @@ public class Leaderboard extends Activity implements StateBase {
         intent.setClass(this, GamePage.class);
         StateManager.Instance.ChangeState("MainGame");
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -73,6 +74,7 @@ public class Leaderboard extends Activity implements StateBase {
         intent.setClass(this, GamePage.class);
         StateManager.Instance.ChangeState("MainGame");
         startActivity(intent);
+        finish();
     }
 
     @Override

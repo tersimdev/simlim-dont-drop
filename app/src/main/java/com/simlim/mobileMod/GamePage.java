@@ -20,12 +20,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +37,11 @@ import java.util.Map;
 public class GamePage extends Activity {
 
     public static GamePage Instance = null;
+    public PointF touchOffset = new PointF();
 
     private GameView gameView;
     private ConstraintLayout container;
+    private LinearLayout surfaceHolder;
 
     public enum UI {
         TXT_SCORE,
@@ -78,6 +84,7 @@ public class GamePage extends Activity {
     private SharedPreferences.Editor sharedPrefEditor = null;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String deviceId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +108,8 @@ public class GamePage extends Activity {
         btnPause = findViewById(R.id.btn_pause);
         drawALine = findViewById(R.id.drawaline);
 
+        surfaceHolder = findViewById(R.id.surface_holder);
+
         final int childSize = container.getChildCount();
         for (int i = 0; i < childSize; ++i) {
             container.getChildAt(i).setElevation(1);
@@ -115,6 +124,7 @@ public class GamePage extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
+                        System.exit(0);
                     }
                 });
 
@@ -137,7 +147,7 @@ public class GamePage extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        container.removeView(gameView);
+        surfaceHolder.removeView(gameView);
         sensorManager.unregisterListener(gravSensorListener);
     }
 
@@ -147,12 +157,10 @@ public class GamePage extends Activity {
         gameView = new GameView(this);
         gameView.setId(View.generateViewId());
         gameView.setElevation(0);
-        container.addView(gameView, 0);
-        final int id = gameView.getId();
-        ConstraintSet c = new ConstraintSet();
-        c.clone(container);
-        c.connect(id, ConstraintSet.START, container.getId(), ConstraintSet.START);
-        c.applyTo(container);
+        surfaceHolder.addView(gameView, 0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        gameView.setLayoutParams(params);
+
         sensorManager.registerListener(gravSensorListener, gravSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -164,6 +172,15 @@ public class GamePage extends Activity {
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        int[] parent_loc = new int[2];
+        int[] holder_loc= new int[2];
+        surfaceHolder.getLocationOnScreen(holder_loc);
+        View parent = (View)surfaceHolder.getParent();
+        parent.getLocationOnScreen(parent_loc);
+
+        touchOffset.x = holder_loc[0] - parent_loc[0];
+        touchOffset.y = holder_loc[1] - parent_loc[1];
+
         // WE are hijacking the touch event into our own system
         int x = (int) event.getX();
         int y = (int) event.getY();
@@ -283,11 +300,43 @@ public class GamePage extends Activity {
         return sharedPref.getInt(_key, _defVal);
     }
 
-    public void SaveToFireStore(String _name, int _score) {
-        Map<String, Object> saveObj = new HashMap<>();
-        saveObj.put("name", UpdateThread.deviceId);
+    public void SaveToFireStore(int _score) {
+        final Map<String, Object> saveObj = new HashMap<>();
         saveObj.put("score", _score);
-        db.collection("HighScores").document(UpdateThread.deviceId).set(saveObj);
+
+        if (deviceId == null) {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    deviceId = instanceIdResult.getId();
+                    saveObj.put("name", "Guest-" + deviceId);
+                    db.collection("HighScores").document(deviceId).set(saveObj);
+                }
+            });
+        }
+        else
+        {
+            saveObj.put("name", "Guest-" + deviceId);
+            db.collection("HighScores").document(deviceId).set(saveObj);
+        }
+    }
+
+    public void SaveToFireStore(String _name, int _score) {
+        final Map<String, Object> saveObj = new HashMap<>();
+        saveObj.put("name", _name);
+        saveObj.put("score", _score);
+
+        if (deviceId == null) {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    deviceId = instanceIdResult.getId();
+                    db.collection("HighScores").document(deviceId).set(saveObj);
+                }
+            });
+        }
+        else
+            db.collection("HighScores").document(deviceId).set(saveObj);
     }
 }
 

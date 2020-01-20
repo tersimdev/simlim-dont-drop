@@ -1,6 +1,7 @@
 package com.simlim.mobileMod;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,11 +17,25 @@ public class GameView extends SurfaceView {
 
     public Context context;
 
-    public GameView(Context _context)
-    {
+    public GameView(Context _context) {
         super(_context);
+        init(_context);
+    }
+
+    public GameView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+
+    }
+
+    public GameView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context);
+    }
+
+    private void init(Context _ctx) {
         holder = getHolder();
-        context = _context;
+        context = _ctx;
 
         if (holder != null)
         {
