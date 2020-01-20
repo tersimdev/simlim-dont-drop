@@ -21,19 +21,10 @@ public class UpdateThread extends Thread {
 
     private boolean isRunning = false;
 
-    public static String deviceId;
-
     public UpdateThread(GameView _view)
     {
         view = _view;
         holder = _view.getHolder();
-
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                deviceId = instanceIdResult.getId();
-            }
-        });
 
         StateManager.Instance.Init(_view);
         EntityManager.Instance.Init(_view);

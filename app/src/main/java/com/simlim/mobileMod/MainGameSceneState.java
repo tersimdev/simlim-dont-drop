@@ -103,8 +103,8 @@ public class MainGameSceneState implements StateBase {
         }
 
         if (TouchManager.Instance.HasTouch()) {
-            final float x = TouchManager.Instance.GetPosX();
-            final float y = TouchManager.Instance.GetPosY();
+            final float x = TouchManager.Instance.GetPosX() - gamePage.touchOffset.x;
+            final float y = TouchManager.Instance.GetPosY() - gamePage.touchOffset.y;
 
             if (!isDown) {
                 line.active = true;
@@ -332,6 +332,9 @@ public class MainGameSceneState implements StateBase {
             p.active = false;
         }
 
+
+        //SET THIS TO TRUE TO RESET HIGHSCORE & FIREBASE ENTRY
+        //if (true) {
         if (score > highscore) {
             highscore = score;
             final String prefix = gameView.getResources().getString(R.string.highscore);
@@ -341,7 +344,7 @@ public class MainGameSceneState implements StateBase {
             gamePage.SaveInt("highscore", highscore);
             gamePage.SaveEditEnd();
 
-            gamePage.SaveToFireStore("unnamed", highscore);
+            gamePage.SaveToFireStore(highscore);
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
