@@ -13,7 +13,8 @@
         android:textAlignment="textStart"
         android:textColor="@color/ACCENT"
         android:textSize="14dp"
-        android:text="WWWWWWWWWWWWWWWWW" />
+        android:text="WWWWWWWWWWWWWWWWW"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/score"
@@ -24,6 +25,7 @@
         android:textAlignment="textEnd"
         android:textColor="@color/ACCENT"
         android:textSize="14dp"
-        android:text="1283719732"/>
+        android:text="1283719732"
+        android:layout_marginRight="10dp"/>
 
 </LinearLayout>

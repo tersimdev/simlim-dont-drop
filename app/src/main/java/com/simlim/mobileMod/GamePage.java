@@ -142,6 +142,13 @@ public class GamePage extends Activity {
         gravSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         sharedPref = getSharedPreferences(SHARED_PREF_ID, 0);
+
+//        for (int i = 0; i < 50; ++i) {
+//            final Map<String, Object> saveObj = new HashMap<>();
+//            saveObj.put("name", "test" + i);
+//            saveObj.put("score", 999);
+//            db.collection("HighScores").document("test" + i).set(saveObj);
+//        }
     }
 
     @Override

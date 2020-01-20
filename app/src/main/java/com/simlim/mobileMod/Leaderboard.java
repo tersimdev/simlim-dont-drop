@@ -41,6 +41,8 @@ public class Leaderboard extends Activity implements StateBase {
     private View loading;
     private ViewGroup insertPoint;
 
+    private int topAmt = 50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class Leaderboard extends Activity implements StateBase {
         loading = findViewById(R.id.loading_lb);
         loading.setVisibility(View.VISIBLE);
 
-        ReadScores(10);
+        ReadScores(topAmt);
     }
 
     public void BackToGame(View _v) {
