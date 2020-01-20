@@ -25,6 +25,7 @@ More Particles, Pooling
 
 
 TaskList (Not Done):
+screen offs while game running
 show that it is paused by rendering an overlay / menu when paused
 Share button
 Camera Shake
