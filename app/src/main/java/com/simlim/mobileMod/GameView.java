@@ -22,6 +22,9 @@ public class GameView extends SurfaceView {
         holder = getHolder();
         context = _context;
 
+//        android.widget.FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(1000, 1000);
+//        this.setLayoutParams(params);
+
         if (holder != null)
         {
             holder.addCallback(new SurfaceHolder.Callback() {

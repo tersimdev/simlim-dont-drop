@@ -229,6 +229,7 @@ public class MainGameSceneState implements StateBase {
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                         target.active = false;
                     } else if (tag.equals("boundary")) {
+//                        gamePage.takeScreenshot();
                         OnGameEnd();
                     }
                 }

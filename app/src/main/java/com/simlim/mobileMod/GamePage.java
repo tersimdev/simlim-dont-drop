@@ -9,12 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -25,8 +28,24 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.share.Share;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,6 +97,11 @@ public class GamePage extends Activity {
     private SharedPreferences.Editor sharedPrefEditor = null;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    CallbackManager callbackManager;
+    AccessToken accessToken;
+    ShareDialog shareDialog;
+    private static final String EMAIL = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +156,54 @@ public class GamePage extends Activity {
         gravSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         sharedPref = getSharedPreferences(SHARED_PREF_ID, 0);
+
+        callbackManager = CallbackManager.Factory.create();
+        accessToken = AccessToken.getCurrentAccessToken();
+        shareDialog = new ShareDialog(this);
+        // this part is optional
+//        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() { ... })
+
+        // Callback registration
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            private ProfileTracker mProfileTracker;
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                System.out.println("Success");
+                if(Profile.getCurrentProfile() == null) {
+                    mProfileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                            System.out.println("facebook - profile " + currentProfile.getName());
+                            mProfileTracker.stopTracking();
+                        }
+                    };
+                } else {
+                    Profile profile = Profile.getCurrentProfile();
+                    System.out.println("facebook - profile " + profile.getName());
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                System.out.println("Cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                System.out.println("Error");
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -177,6 +249,47 @@ public class GamePage extends Activity {
         StateManager.Instance.ChangeState("Mainmenu");
     }
 
+    public boolean isLoggedIn() {
+        return accessToken != null && !accessToken.isExpired();
+    }
+
+    public Bitmap takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = gameView.getRootView();// getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            v1.buildDrawingCache(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            return bitmap;
+//
+//            File imageFile = new File(mPath);
+//
+//            System.out.println(4);
+//
+//            FileOutputStream outputStream = new FileOutputStream(imageFile);
+//            System.out.println(3);
+//
+//            int quality = 100;
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+//            outputStream.flush();
+//            outputStream.close();
+//
+//            System.out.println("Screenshot taken");
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void HandleOnClick(View _v) {
         if (_v.getId() == R.id.btn_leaderboard) {
             Intent intent = new Intent();
@@ -186,6 +299,17 @@ public class GamePage extends Activity {
         }
         else if (_v.getId() == R.id.btn_pause) {
             GameSystem.Instance.TogglePause();
+        }
+        else if (_v.getId() == R.id.btn_share) {
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(takeScreenshot())
+                    .build();
+            if (ShareDialog.canShow(SharePhotoContent.class)) {
+                SharePhotoContent content = new SharePhotoContent.Builder()
+                        .addPhoto(photo)
+                        .build();
+                shareDialog.show(content);
+            }
         }
     }
 

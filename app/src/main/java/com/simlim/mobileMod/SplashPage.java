@@ -7,6 +7,9 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 public class SplashPage extends Activity {
 
     protected boolean active = true;
