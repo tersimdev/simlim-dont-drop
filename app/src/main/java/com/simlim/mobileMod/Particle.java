@@ -10,7 +10,7 @@ public class Particle extends GameObject {
 
     private float radius = 50;
 
-    private float age = 0;
+    public float age = 0;
     public float lifetime = 0;
 
     public PointF velocity = new PointF(0.f, 0.f);

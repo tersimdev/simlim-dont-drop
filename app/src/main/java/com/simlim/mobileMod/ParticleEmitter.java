@@ -41,10 +41,9 @@ public class ParticleEmitter {
         position = _position;
 
         for (int i = 0; i < count; ++i) {
-            Particle go = new Particle();
-            go.active = true;
-            go.tag = "particle";
+            Particle go = Fetch();
 
+            go.age = 0.f;
             go.lifetime = lifetime + lifetimeRange * r();
 
             float s = speed + speedRange * r();
@@ -61,10 +60,26 @@ public class ParticleEmitter {
             go.color = color;
 
             go.emitter = this;
-
-            particles.add(go);
-            EntityManager.Instance.AddEntity(go);
         }
+    }
+
+    private Particle Fetch() {
+        if (!particles.isEmpty()) {
+            Particle front = particles.get(0);
+            if (!front.active) {
+                particles.remove(0);
+                particles.add(front);
+                front.active = true;
+                return front;
+            }
+        }
+
+        Particle particle = new Particle();
+        particle.active = true;
+        particle.tag = "particle";
+        particles.add(particle);
+        EntityManager.Instance.AddEntity(particle);
+        return particle;
     }
 
     static public float r() {
