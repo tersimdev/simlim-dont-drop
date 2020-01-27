@@ -15,7 +15,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MotionEvent;
@@ -24,10 +23,10 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,7 +36,6 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.share.Share;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -46,20 +44,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class GamePage extends Activity {
 
     public static GamePage Instance = null;
     public PointF touchOffset = new PointF();
 
+    private Random rand = new Random();
+
     private GameView gameView;
     private ConstraintLayout container;
+    private ConstraintLayout menuPopover;
+
+    private Switch soundEffect;
+
+    private int holderLeft;
+    private int holderTop;
     private LinearLayout surfaceHolder;
 
     public enum UI {
@@ -124,6 +128,10 @@ public class GamePage extends Activity {
 
         setContentView(R.layout.activity_game_scene);
         container = findViewById(R.id.container);
+        menuPopover = findViewById(R.id.menu_popover);
+        menuPopover.setVisibility(View.INVISIBLE);
+        soundEffect = findViewById(R.id.se_switch);
+        soundEffect.setChecked(true);
 
         scoreText = findViewById(R.id.score);
         highscoreText = findViewById(R.id.highscore);
@@ -133,6 +141,10 @@ public class GamePage extends Activity {
         drawALine = findViewById(R.id.drawaline);
 
         surfaceHolder = findViewById(R.id.surface_holder);
+
+        highscoreText.bringToFront();
+        menuPopover.bringToFront();
+        btnPause.bringToFront();
 
         final int childSize = container.getChildCount();
         for (int i = 0; i < childSize; ++i) {
@@ -313,6 +325,25 @@ public class GamePage extends Activity {
         }
     }
 
+    public void ShakeScreen() {
+        holderLeft = surfaceHolder.getLeft();
+        holderTop = surfaceHolder.getTop();
+
+        surfaceHolder.setLeft(holderLeft + rand.nextInt(50) - 25);
+        surfaceHolder.setTop(holderTop + rand.nextInt(50) - 25);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        surfaceHolder.setLeft(holderLeft);
+                        surfaceHolder.setTop(holderTop);
+                    }
+                },
+                100
+        );
+    }
+
     public void HandleOnClick(View _v) {
         if (_v.getId() == R.id.btn_leaderboard) {
             Intent intent = new Intent();
@@ -321,7 +352,13 @@ public class GamePage extends Activity {
             startActivity(intent);
         }
         else if (_v.getId() == R.id.btn_pause) {
+            if (menuPopover.getVisibility() == View.VISIBLE) {
+                menuPopover.setVisibility(View.INVISIBLE);
+            } else {
+                menuPopover.setVisibility(View.VISIBLE);
+            }
             GameSystem.Instance.TogglePause();
+
         }
         else if (_v.getId() == R.id.btn_share) {
             SharePhoto photo = new SharePhoto.Builder()
@@ -333,6 +370,9 @@ public class GamePage extends Activity {
                         .build();
                 shareDialog.show(content);
             }
+        }
+        else if (_v.getId() == R.id.se_switch) {
+            AudioManager.Instance.SetEnabled(soundEffect.isChecked());
         }
     }
 

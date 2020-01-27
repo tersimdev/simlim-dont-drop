@@ -131,7 +131,7 @@ public class MainGameSceneState implements StateBase {
         //hide and show views
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, false);
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
-        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
+//        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
         if (highscore < 0) gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
 
@@ -220,6 +220,7 @@ public class MainGameSceneState implements StateBase {
                     final String tag = target.tag;
 
                     Vibrate();
+                    AudioManager.Instance.PlayAudio(R.raw.hit, 1);
 
                     emitter.gravity.set(circle.getVelocity().x * -1.5f, circle.getVelocity().y * -1.5f);
                     emitter.Spawn(50, circle.center);
@@ -230,6 +231,7 @@ public class MainGameSceneState implements StateBase {
                         target.active = false;
                     } else if (tag.equals("boundary")) {
 //                        gamePage.takeScreenshot();
+                        gamePage.ShakeScreen();
                         OnGameEnd();
                     }
                 }
@@ -351,7 +353,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, true);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, true);
         gamePage.ShowUI(GamePage.UI.TXT_HSCORE, true);
-        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
+//        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, false);
     }
 
     private void OnGameStart() {
@@ -362,7 +364,7 @@ public class MainGameSceneState implements StateBase {
         gamePage.ShowUI(GamePage.UI.BTN_SHARE, false);
         gamePage.ShowUI(GamePage.UI.TXT_DRAWLINE, false);
         gamePage.ShowUI(GamePage.UI.TXT_HSCORE, false);
-        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, true);
+//        gamePage.ShowUI(GamePage.UI.BTN_PAUSE, true);
 
         circle.setKinematic(true);
         line.active = true;
