@@ -9,6 +9,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.SurfaceView;
 
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.Random;
@@ -220,7 +223,7 @@ public class MainGameSceneState implements StateBase {
                     final String tag = target.tag;
 
                     Vibrate();
-                    AudioManager.Instance.PlayAudio(R.raw.hit, 1);
+                    AudioManager.Instance.PlayAudio(R.raw.hit);
 
                     emitter.gravity.set(circle.getVelocity().x * -1.5f, circle.getVelocity().y * -1.5f);
                     emitter.Spawn(50, circle.center);
@@ -230,8 +233,8 @@ public class MainGameSceneState implements StateBase {
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                         target.active = false;
                     } else if (tag.equals("boundary")) {
-//                        gamePage.takeScreenshot();
-                        gamePage.ShakeScreen();
+                        gamePage.takeScreenshot();
+                        gamePage.ShakeScreen(20, 10, 20);
                         OnGameEnd();
                     }
                 }
@@ -346,7 +349,13 @@ public class MainGameSceneState implements StateBase {
             gamePage.SaveInt("highscore", highscore);
             gamePage.SaveEditEnd();
 
-            gamePage.SaveToFireStore(highscore);
+            if(Profile.getCurrentProfile() == null) {
+                gamePage.SaveToFireStore(highscore);
+            } else {
+                Profile profile = Profile.getCurrentProfile();
+                gamePage.SaveToFireStore(profile.getName(), highscore);
+            }
+
         }
 
         gamePage.ShowUI(GamePage.UI.BTN_LEADERBOARD, true);
@@ -369,7 +378,7 @@ public class MainGameSceneState implements StateBase {
         circle.setKinematic(true);
         line.active = true;
 
-        AudioManager.Instance.PlayAudio(R.raw.correct, 1);
+        AudioManager.Instance.PlayAudio(R.raw.correct);
     }
 }
 

@@ -11,12 +11,14 @@ public class AudioManager {
     private SurfaceView view = null;
 
     private boolean isEnabled;
+    private float volume;
 
     private AudioManager() { }
 
     public void Init(SurfaceView _view) {
         view = _view;
         isEnabled = true;
+        volume = 1.f;
         Reset();
     }
 
@@ -30,13 +32,13 @@ public class AudioManager {
         audioMap.clear();
     }
 
-    public void PlayAudio(final int _id, float _vol) {
+    public void PlayAudio(final int _id) {
         if (!isEnabled) return;
 
         if (audioMap.containsKey(_id)) {
             MediaPlayer m = audioMap.get(_id);
             m.seekTo(0);
-            m.setVolume(_vol, _vol);
+            m.setVolume(volume, volume);
             m.start();
         }
         else {
@@ -50,6 +52,8 @@ public class AudioManager {
         if (audioMap.containsKey(_id))
             audioMap.get(_id).pause();
     }
+
+    public void SetVolume(float _vol) { volume = _vol; }
 
     public void SetEnabled(boolean _isEnabled) {
         isEnabled = _isEnabled;
