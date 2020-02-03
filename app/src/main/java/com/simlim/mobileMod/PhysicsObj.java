@@ -173,7 +173,7 @@ public class PhysicsObj extends GameObject implements Collidable {
                     if (PointFOps.dot(normal, PointFOps.minus(center, line.center)) < 0)
                         normal.set(-normal.x, -normal.y);
                     //reflect
-                    Reflect(normal, 0.5f);
+                    Reflect(normal, 0.3f);
 
                     if (onHitCallBack != null)
                         onHitCallBack.doThing(line);
@@ -197,6 +197,7 @@ public class PhysicsObj extends GameObject implements Collidable {
     }
 
     public void SetRadius(float _radius) {
+
         radius = _radius;
         rect.top = (int)(center.y - radius);
         rect.bottom = (int)(center.y + radius);

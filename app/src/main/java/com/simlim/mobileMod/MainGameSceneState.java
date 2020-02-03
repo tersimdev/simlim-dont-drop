@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
@@ -29,7 +30,7 @@ public class MainGameSceneState implements StateBase {
     private boolean gameOver = true;
 
     private float timer = 0.0f;
-    private float[] bounceTime = {0.5f,3.f};
+    private float[] bounceTime = {0.5f, 3.f};
     private boolean isDown = false;
     private int score = 0;
     private int highscore = -1;
@@ -40,7 +41,10 @@ public class MainGameSceneState implements StateBase {
 
     private ParticleEmitter emitter = new ParticleEmitter();
 
-    public MainGameSceneState() { }
+    private float originalCircleRadius;
+
+    public MainGameSceneState() {
+    }
 
     @Override
     public String GetName() {
@@ -98,7 +102,7 @@ public class MainGameSceneState implements StateBase {
         }
 
         if (gameOver) {
-            if ((int)(timer) % 2 == 0) {
+            if ((int) (timer) % 2 == 0) {
                 gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.WHITE);
             } else {
                 gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.GRAY);
@@ -152,10 +156,10 @@ public class MainGameSceneState implements StateBase {
         {
             GameObject bg = new GameObject();
             bg.color = ResourcesCompat.getColor(gameView.getResources(), R.color.BLACK, null);//
-            bg.rect.top = (int)(center.y - halfSize);
-            bg.rect.bottom = (int)(center.y + halfSize);
-            bg.rect.left = (int)(center.x - halfSize);
-            bg.rect.right = (int)(center.x + halfSize);
+            bg.rect.top = (int) (center.y - halfSize);
+            bg.rect.bottom = (int) (center.y + halfSize);
+            bg.rect.left = (int) (center.x - halfSize);
+            bg.rect.right = (int) (center.x + halfSize);
             EntityManager.Instance.AddEntity(bg);
 
             final int borderColor = ResourcesCompat.getColor(gameView.getResources(), R.color.MAIN, null);
@@ -204,8 +208,9 @@ public class MainGameSceneState implements StateBase {
 
         //create circle
         {
+            originalCircleRadius = width * 0.05f;
             circle.color = Color.WHITE;
-            circle.SetRadius(50.f);
+            circle.SetRadius(originalCircleRadius);
             circle.setKinematic(false);
             circle.SetCenterX(center.x);
             circle.SetCenterY(center.y);
@@ -264,11 +269,13 @@ public class MainGameSceneState implements StateBase {
                 go.SetRadius(20);
                 go.tag = "pickup";
                 go.active = false;
+                final int idx = i;
                 go.onHitCallBack = new Callback() {
                     @Override
                     public void doThing(GameObject target) {
                         Vibrate();
                         score += 2;
+                        RandomGameplayEffect(idx);
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                     }
                 };
@@ -326,7 +333,9 @@ public class MainGameSceneState implements StateBase {
     //call me when game ends
     private void OnGameEnd() {
         gameOver = true;
+        gamePage.SetScreenAutoLock(true);
 
+        circle.SetRadius(originalCircleRadius);
         circle.ResetKinematic();
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);
@@ -378,7 +387,39 @@ public class MainGameSceneState implements StateBase {
         circle.setKinematic(true);
         line.active = true;
 
+        gamePage.SetScreenAutoLock(false);
         AudioManager.Instance.PlayAudio(R.raw.correct);
+    }
+
+    private void RandomGameplayEffect(int idx) {
+        Random rand = new Random();
+        int choice = rand.nextInt(6);
+        switch(choice) {
+            case 0:
+                PointF dir = PointFOps.minus(circle.GetCenter(), pickups[idx].GetCenter());
+                circle.Reflect(dir, -0.3f);
+                break;
+            case 1:
+                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 1.2f));
+                break;
+            case 2:
+                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 0.8f));
+                break;
+            case 3:
+                float radius = circle.GetRadius() + originalCircleRadius * 0.2f;
+                Math.min(radius, width * 0.85f);
+                circle.SetRadius(radius);
+                break;
+            case 4:
+                radius = circle.GetRadius() - originalCircleRadius * 0.2f;
+                Math.max(radius, 5);
+                circle.SetRadius(radius);
+                break;
+            default:
+            case 5:
+                //nothing
+                break;
+        }
     }
 }
 
