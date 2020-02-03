@@ -38,6 +38,8 @@ public class MainGameSceneState implements StateBase {
 
     private ParticleEmitter emitter = new ParticleEmitter();
 
+    private float originalCircleRadius;
+
     public MainGameSceneState() {
     }
 
@@ -203,8 +205,9 @@ public class MainGameSceneState implements StateBase {
 
         //create circle
         {
+            originalCircleRadius = width * 0.05f;
             circle.color = Color.WHITE;
-            circle.SetRadius(50.f);
+            circle.SetRadius(originalCircleRadius);
             circle.setKinematic(false);
             circle.SetCenterX(center.x);
             circle.SetCenterY(center.y);
@@ -263,12 +266,13 @@ public class MainGameSceneState implements StateBase {
                 go.SetRadius(20);
                 go.tag = "pickup";
                 go.active = false;
+                final int idx = i;
                 go.onHitCallBack = new Callback() {
                     @Override
                     public void doThing(GameObject target) {
                         Vibrate();
                         score += 2;
-                        RandomGameplayEffect();
+                        RandomGameplayEffect(idx);
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                     }
                 };
@@ -328,6 +332,7 @@ public class MainGameSceneState implements StateBase {
         gameOver = true;
         gamePage.SetScreenAutoLock(true);
 
+        circle.SetRadius(originalCircleRadius);
         circle.ResetKinematic();
         circle.SetCenterX(center.x);
         circle.SetCenterY(center.y);
@@ -378,21 +383,33 @@ public class MainGameSceneState implements StateBase {
         AudioManager.Instance.PlayAudio(R.raw.correct, 1);
     }
 
-    private void RandomGameplayEffect() {
+    private void RandomGameplayEffect(int idx) {
         Random rand = new Random();
-        int choice = rand.nextInt(1);
+        int choice = rand.nextInt(6);
         switch(choice) {
             case 0:
-                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 0.8f));
+                PointF dir = PointFOps.minus(circle.GetCenter(), pickups[idx].GetCenter());
+                circle.Reflect(dir, -0.3f);
                 break;
             case 1:
                 circle.setVelocity(PointFOps.mul(circle.getVelocity(), 1.2f));
                 break;
             case 2:
-                circle.Reflect(new PointF(0,1), 1);
+                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 0.8f));
                 break;
             case 3:
-                //increase size
+                float radius = circle.GetRadius() + originalCircleRadius * 0.2f;
+                Math.min(radius, width * 0.85f);
+                circle.SetRadius(radius);
+                break;
+            case 4:
+                radius = circle.GetRadius() - originalCircleRadius * 0.2f;
+                Math.max(radius, 5);
+                circle.SetRadius(radius);
+                break;
+            default:
+            case 5:
+                //nothing
                 break;
         }
     }
