@@ -1,6 +1,7 @@
 package com.simlim.mobileMod;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Pickup extends GameObject implements Collidable {
@@ -14,7 +15,8 @@ public class Pickup extends GameObject implements Collidable {
     @Override
     public void Render(Canvas _canvas) {
         Paint paint = new Paint();
-        paint.setColor(color);
+        hsv[0] += 10;
+        paint.setColor(Color.HSVToColor(hsv));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
 
