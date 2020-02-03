@@ -41,26 +41,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score" />
 
-    <Button
-        android:id="@+id/btn_share"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:onClick="HandleOnClick"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/drawaline"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <LinearLayout
+        android:id="@+id/surface_holder"
+        android:layout_width="400dp"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_leaderboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore" />
 
-    <Button
+    <!--    <Button-->
+<!--        android:id="@+id/btn_leaderboard"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:backgroundTint="#FFFFFF"-->
+<!--        android:onClick="HandleOnClick"-->
+<!--        android:saveEnabled="false"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/drawaline"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/btn_share"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <ImageButton
         android:id="@+id/btn_leaderboard"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="HandleOnClick"
-        android:textSize="20sp"
+        android:src="@drawable/leaderboard"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/drawaline"
         app:layout_constraintEnd_toStartOf="@+id/btn_share"
         app:layout_constraintStart_toStartOf="parent" />
@@ -77,6 +93,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/btn_share"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="HandleOnClick"
+        android:scaleType="fitCenter"
+        android:src="@drawable/share"
+        app:layout_constraintBottom_toTopOf="@+id/drawaline"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/drawaline"
         android:layout_width="wrap_content"
@@ -92,16 +121,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score"
         app:layout_constraintVertical_bias="1.0" />
-
-    <LinearLayout
-        android:id="@+id/surface_holder"
-        android:layout_width="400dp"
-        android:layout_height="450dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btn_leaderboard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highscore" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menu_popover"

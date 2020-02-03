@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -81,7 +82,8 @@ public class GamePage extends Activity {
 
     //UI
     private TextView scoreText, highscoreText;
-    private Button btnLeaderboard, btnShare, btnPause;
+    private ImageButton btnLeaderboard, btnShare;
+    private Button btnPause;
     private TextView drawALine;
 
     //alert for exit
