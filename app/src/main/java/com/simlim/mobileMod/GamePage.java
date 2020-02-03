@@ -357,37 +357,44 @@ public class GamePage extends Activity {
     }
 
     public void ShakeScreen(final int shake, final int count, final int interval) {
-        holderLeft = surfaceHolder.getLeft();
-        holderTop = surfaceHolder.getTop();
 
-        final int halfShake = shake/ 2;
 
-        surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
-        surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                holderLeft = surfaceHolder.getLeft();
+                holderTop = surfaceHolder.getTop();
 
-        for (int i = 0; i < count; ++i) {
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
-                            surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
-                        }
-                    },
-                    interval * (int)i
-            );
-        }
+                final int halfShake = shake / 2;
+                surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
+                surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
 
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        surfaceHolder.setLeft(holderLeft);
-                        surfaceHolder.setTop(holderTop);
-                    }
-                },
-                interval * count
-        );
+                for (int i = 0; i < count; ++i) {
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
+                                    surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
+                                }
+                            },
+                            interval * (int) i
+                    );
+                }
+
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                surfaceHolder.setLeft(holderLeft);
+                                surfaceHolder.setTop(holderTop);
+                            }
+                        },
+                        interval * count
+
+                );
+            }
+        });
     }
 
 

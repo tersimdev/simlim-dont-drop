@@ -40,6 +40,7 @@ public class MainGameSceneState implements StateBase {
     private Pickup[] pickups = new Pickup[10];
 
     private ParticleEmitter emitter = new ParticleEmitter();
+    private ParticleEmitter pickupEmitter = new ParticleEmitter();
 
     private float originalCircleRadius;
 
@@ -275,8 +276,9 @@ public class MainGameSceneState implements StateBase {
                     @Override
                     public void doThing(GameObject target) {
                         Vibrate();
-                        emitter.gravity.set(circle.getVelocity().x * -1.5f, circle.getVelocity().y * -1.5f);
-                        emitter.Spawn(50, circle.center);
+                        PointF dir = PointFOps.minus(pickups[idx].center, circle.center);
+                        pickupEmitter.gravity = PointFOps.mul(dir, 10.f);
+                        pickupEmitter.Spawn(50, pickups[idx].center);
                         score += 2;
                         RandomGameplayEffect(idx);
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
@@ -297,6 +299,18 @@ public class MainGameSceneState implements StateBase {
         emitter.endRadius = 0.f;
         emitter.positionRange.set(10.f, 10.f);
         emitter.color = Color.WHITE;// ResourcesCompat.getColor(gameView.getResources(), R.color, null);
+
+        pickupEmitter.angleRange = 180.f;
+        pickupEmitter.speed = 50.f;
+        pickupEmitter.speedRange = 25.f;
+        pickupEmitter.lifetime = 0.5f;
+        pickupEmitter.lifetimeRange = 0.1f;
+        pickupEmitter.startRadius = 10.f;
+        pickupEmitter.startRadiusRange = 5.f;
+        pickupEmitter.endRadius = 0.f;
+        pickupEmitter.positionRange.set(10.f, 10.f);
+//        pickupEmitter.color = Color.WHITE;// ResourcesCompat.getColor(gameView.getResources(), R.color, null);
+        pickupEmitter.rainbow = true;
     }
 
     private void SpawnPickup(float _x, float _y) {

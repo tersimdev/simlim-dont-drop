@@ -1,6 +1,7 @@
 package com.simlim.mobileMod;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
@@ -17,6 +18,9 @@ public class Particle extends GameObject {
 
     public float startRadius = 50;
     public float endRadius = 0;
+
+    public boolean rainbow = false;
+    private float hsv[] = new float[] { 0,1,1 };
 
     @Override
     public void Render(Canvas _canvas) {
@@ -41,6 +45,13 @@ public class Particle extends GameObject {
         center = PointFOps.add(center, PointFOps.mul(velocity, dt));
 
         radius = (endRadius - startRadius) * (age / lifetime) + startRadius;
+
+        if (rainbow) {
+            hsv[0] += 100 * dt;
+            if (hsv[0] >= 360)
+                hsv[0] = 0;
+            color = Color.HSVToColor(hsv);
+        }
 
         if (age > lifetime) {
             active = false;

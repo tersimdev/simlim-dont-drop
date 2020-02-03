@@ -36,6 +36,7 @@ public class ParticleEmitter {
     public float endRadiusRange;
 
     public int color;
+    public boolean rainbow = false;
 
     public void Spawn(int count, PointF _position) {
         position = _position;
@@ -58,6 +59,7 @@ public class ParticleEmitter {
             go.endRadius = endRadius + endRadiusRange * r();
 
             go.color = color;
+            go.rainbow = rainbow;
 
             go.emitter = this;
         }
