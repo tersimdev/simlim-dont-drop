@@ -266,7 +266,8 @@ public class MainGameSceneState implements StateBase {
             for (int i = 0; i < pickups.length; ++i) {
                 Pickup go = new Pickup();
                 go.color = ResourcesCompat.getColor(gameView.getResources(), R.color.ACCENT, null);
-                go.SetRadius(20);
+                Color.colorToHSV(go.color, go.hsv);
+                go.SetRadius(width * 0.02f);
                 go.tag = "pickup";
                 go.active = false;
                 final int idx = i;
