@@ -18,6 +18,7 @@ public class Line extends GameObject implements Collidable {
     Line(PointF _start, PointF _end) {
         start = _start;
         end = _end;
+        radius = 0.55f * PointFOps.len(PointFOps.minus(start, end));
     }
 
     @Override
@@ -53,6 +54,10 @@ public class Line extends GameObject implements Collidable {
     @Override
     public void OnHit(Collidable _other) {
 
+    }
+
+    public void SetRadius(float rad) {
+        radius = rad;
     }
 
     public void setCenter(PointF _center) {
