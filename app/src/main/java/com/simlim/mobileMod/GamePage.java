@@ -501,7 +501,7 @@ public class GamePage extends Activity {
     }
 
     public PointF UpdateGravity() {
-        return new PointF(gravity.x, gravity.y + 0.3f);
+        return new PointF(gravity.x, gravity.y + 0.5f);
     }
 
     public void SaveEditBegin() {

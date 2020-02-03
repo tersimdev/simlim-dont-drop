@@ -2,6 +2,7 @@ package com.simlim.mobileMod;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
 
 public class PhysicsObj extends GameObject implements Collidable {
@@ -166,17 +167,23 @@ public class PhysicsObj extends GameObject implements Collidable {
             if (line.isValid())
             {
                 HitInfo hitInfo = Collision.LineIntersect(line, new Line(center, PointFOps.add(center, velocity)));
-                if (hitInfo.hit && PointFOps.lenSqr(hitInfo.point, center) < radius * radius) {
+                if (hitInfo.hit) {
                     //calculate normal
                     PointF normal = PointFOps.minus(line.getStart(), line.getEnd());
                     normal.set(-normal.y, normal.x);
                     if (PointFOps.dot(normal, PointFOps.minus(center, line.center)) < 0)
                         normal.set(-normal.x, -normal.y);
-                    //reflect
-                    Reflect(normal, 0.3f);
 
-                    if (onHitCallBack != null)
-                        onHitCallBack.doThing(line);
+                    normal = PointFOps.normalize(normal);
+                    float dist = Math.abs(PointFOps.dot(normal, PointFOps.minus(hitInfo.point, center)));
+                    if (dist <= radius) {
+
+                        //reflect
+                        Reflect(normal, 0.3f);
+
+                        if (onHitCallBack != null)
+                            onHitCallBack.doThing(line);
+                    }
                 }
             }
         }

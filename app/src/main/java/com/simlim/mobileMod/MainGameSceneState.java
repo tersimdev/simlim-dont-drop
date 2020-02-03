@@ -259,6 +259,7 @@ public class MainGameSceneState implements StateBase {
             line.active = false;
             line.setValid(false);
             line.invalidCol = Color.DKGRAY;
+            line.SetRadius(width);
             EntityManager.Instance.AddEntity(line);
         }
 
