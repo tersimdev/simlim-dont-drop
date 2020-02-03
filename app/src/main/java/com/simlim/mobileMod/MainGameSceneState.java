@@ -27,7 +27,7 @@ public class MainGameSceneState implements StateBase {
     private boolean gameOver = true;
 
     private float timer = 0.0f;
-    private float[] bounceTime = {0.5f,3.f};
+    private float[] bounceTime = {0.5f, 3.f};
     private boolean isDown = false;
     private int score = 0;
     private int highscore = -1;
@@ -38,7 +38,8 @@ public class MainGameSceneState implements StateBase {
 
     private ParticleEmitter emitter = new ParticleEmitter();
 
-    public MainGameSceneState() { }
+    public MainGameSceneState() {
+    }
 
     @Override
     public String GetName() {
@@ -96,7 +97,7 @@ public class MainGameSceneState implements StateBase {
         }
 
         if (gameOver) {
-            if ((int)(timer) % 2 == 0) {
+            if ((int) (timer) % 2 == 0) {
                 gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.WHITE);
             } else {
                 gamePage.UpdateUITextColor(GamePage.UI.TXT_DRAWLINE, Color.GRAY);
@@ -150,10 +151,10 @@ public class MainGameSceneState implements StateBase {
         {
             GameObject bg = new GameObject();
             bg.color = ResourcesCompat.getColor(gameView.getResources(), R.color.BLACK, null);//
-            bg.rect.top = (int)(center.y - halfSize);
-            bg.rect.bottom = (int)(center.y + halfSize);
-            bg.rect.left = (int)(center.x - halfSize);
-            bg.rect.right = (int)(center.x + halfSize);
+            bg.rect.top = (int) (center.y - halfSize);
+            bg.rect.bottom = (int) (center.y + halfSize);
+            bg.rect.left = (int) (center.x - halfSize);
+            bg.rect.right = (int) (center.x + halfSize);
             EntityManager.Instance.AddEntity(bg);
 
             final int borderColor = ResourcesCompat.getColor(gameView.getResources(), R.color.MAIN, null);
@@ -267,6 +268,7 @@ public class MainGameSceneState implements StateBase {
                     public void doThing(GameObject target) {
                         Vibrate();
                         score += 2;
+                        RandomGameplayEffect();
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
                     }
                 };
@@ -324,7 +326,7 @@ public class MainGameSceneState implements StateBase {
     //call me when game ends
     private void OnGameEnd() {
         gameOver = true;
-        gamePage.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        gamePage.SetScreenAutoLock(true);
 
         circle.ResetKinematic();
         circle.SetCenterX(center.x);
@@ -371,9 +373,28 @@ public class MainGameSceneState implements StateBase {
         circle.setKinematic(true);
         line.active = true;
 
-        gamePage.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        gamePage.SetScreenAutoLock(false);
 
         AudioManager.Instance.PlayAudio(R.raw.correct, 1);
+    }
+
+    private void RandomGameplayEffect() {
+        Random rand = new Random();
+        int choice = rand.nextInt(1);
+        switch(choice) {
+            case 0:
+                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 0.8f));
+                break;
+            case 1:
+                circle.setVelocity(PointFOps.mul(circle.getVelocity(), 1.2f));
+                break;
+            case 2:
+                circle.Reflect(new PointF(0,1), 1);
+                break;
+            case 3:
+                //increase size
+                break;
+        }
     }
 }
 

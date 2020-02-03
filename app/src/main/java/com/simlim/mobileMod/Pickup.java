@@ -6,6 +6,8 @@ import android.graphics.Paint;
 public class Pickup extends GameObject implements Collidable {
 
 
+    public float hsv[] = new float[] { 0,1,1 };
+
     private float radius = 50;
     public Callback onHitCallBack = null;
 

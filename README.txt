@@ -15,6 +15,8 @@ Accelerometer (change gravity direction)
 Pausing
 Online Leaderboard (using Firebase)
 Alert Dialog for Quitting
+More gameplay features - pickups/powerups
+	dampeners, size increase, speed increase, random walls
  
 James
 Particles (Trail)
@@ -22,13 +24,10 @@ Controls (Drawing of Line)
 Screenflow (fixed app reload)
 Sprite Animation (encapsulated code)
 More Particles, Pooling
+Pause Menu
+Camera Shake
+Share button
 
 
 TaskList (Not Done):
-screen offs while game running
-show that it is paused by rendering an overlay / menu when paused
-Share button
-Camera Shake
-More gameplay features - pickups/powerups
-	dampeners, size increase, speed increase, random walls
 

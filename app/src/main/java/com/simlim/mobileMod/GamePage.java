@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -444,7 +445,7 @@ public class GamePage extends Activity {
     }
 
     public PointF UpdateGravity() {
-        return gravity;
+        return new PointF(gravity.x, gravity.y + 0.3f);
     }
 
     public void SaveEditBegin() {
@@ -507,6 +508,15 @@ public class GamePage extends Activity {
         }
         else
             db.collection("HighScores").document(deviceId).set(saveObj);
+    }
+
+    public void SetScreenAutoLock(final boolean lock) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (lock) getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                else getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }});
     }
 }
 
