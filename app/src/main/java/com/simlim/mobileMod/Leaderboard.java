@@ -23,6 +23,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +120,7 @@ public class Leaderboard extends Activity implements StateBase {
 
     public void ReadScores(int limit) {
         final List<ListItem> ret = new ArrayList<>();
-        FirebaseFirestore.getInstance().collection("HighScores").orderBy("score", Query.Direction.ASCENDING).limit(limit).get()
+        FirebaseFirestore.getInstance().collection("HighScores").orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -128,6 +130,7 @@ public class Leaderboard extends Activity implements StateBase {
                             Map<String, Object> data = snapshot.getData();
                             ret.add(new ListItem(data.get("name").toString(), data.get("score").toString()));
                         }
+                        Collections.reverse(ret);
                         DisplayScores(ret);
                     }
                 })

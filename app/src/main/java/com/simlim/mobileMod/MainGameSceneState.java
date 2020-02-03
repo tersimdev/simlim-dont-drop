@@ -425,12 +425,12 @@ public class MainGameSceneState implements StateBase {
                 break;
             case 3:
                 float radius = circle.GetRadius() + originalCircleRadius * 0.2f;
-                Math.min(radius, width * 0.85f);
+                radius = Math.min(radius, width * 0.25f);
                 circle.SetRadius(radius);
                 break;
             case 4:
                 radius = circle.GetRadius() - originalCircleRadius * 0.2f;
-                Math.max(radius, 5);
+                radius = Math.max(radius, width * 0.01f);
                 circle.SetRadius(radius);
                 break;
             default:
