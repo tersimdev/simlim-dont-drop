@@ -16,6 +16,8 @@ public class Pickup extends GameObject implements Collidable {
     public void Render(Canvas _canvas) {
         Paint paint = new Paint();
         hsv[0] += 10;
+        if (hsv[0] >= 360)
+            hsv[0] = 0;
         paint.setColor(Color.HSVToColor(hsv));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
