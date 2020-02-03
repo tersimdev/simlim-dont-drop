@@ -274,6 +274,8 @@ public class MainGameSceneState implements StateBase {
                     @Override
                     public void doThing(GameObject target) {
                         Vibrate();
+                        emitter.gravity.set(circle.getVelocity().x * -1.5f, circle.getVelocity().y * -1.5f);
+                        emitter.Spawn(50, circle.center);
                         score += 2;
                         RandomGameplayEffect(idx);
                         gamePage.UpdateUIText(GamePage.UI.TXT_SCORE, Integer.toString(score));
