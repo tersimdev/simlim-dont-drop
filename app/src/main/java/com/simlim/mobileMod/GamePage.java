@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -56,6 +57,8 @@ public class GamePage extends Activity {
     public PointF touchOffset = new PointF();
 
     private Random rand = new Random();
+
+    private Bitmap screenshot;
 
     private GameView gameView;
     private ConstraintLayout container;
@@ -146,6 +149,27 @@ public class GamePage extends Activity {
         highscoreText.bringToFront();
         menuPopover.bringToFront();
         btnPause.bringToFront();
+
+        SeekBar volume = findViewById(R.id.volume_slider);
+        volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress == 0)
+                    AudioManager.Instance.SetVolume(0.f);
+                else
+                    AudioManager.Instance.SetVolume((float)Math.log10((double)progress) / 2.f);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                AudioManager.Instance.PlayAudio(R.raw.hit);
+            }
+        });
 
         final int childSize = container.getChildCount();
         for (int i = 0; i < childSize; ++i) {
@@ -298,13 +322,19 @@ public class GamePage extends Activity {
             String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
-            View v1 = gameView.getRootView();// getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true);
-            v1.buildDrawingCache(true);
-            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            v1.setDrawingCacheEnabled(false);
+//            View v1 = gameView.getRootView();// getWindow().getDecorView().getRootView();
+//            v1.setDrawingCacheEnabled(true);
+//            v1.buildDrawingCache(true);
+//            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+//            v1.setDrawingCacheEnabled(false);
 
-            return bitmap;
+            gameView.setDrawingCacheEnabled(true);
+            gameView.buildDrawingCache(true);
+            screenshot = Bitmap.createBitmap(gameView.getDrawingCache());
+            gameView.setDrawingCacheEnabled(false);
+            gameView.destroyDrawingCache();
+
+            return screenshot;
 //
 //            File imageFile = new File(mPath);
 //
@@ -326,12 +356,27 @@ public class GamePage extends Activity {
         }
     }
 
-    public void ShakeScreen() {
+    public void ShakeScreen(final int shake, final int count, final int interval) {
         holderLeft = surfaceHolder.getLeft();
         holderTop = surfaceHolder.getTop();
 
-        surfaceHolder.setLeft(holderLeft + rand.nextInt(50) - 25);
-        surfaceHolder.setTop(holderTop + rand.nextInt(50) - 25);
+        final int halfShake = shake/ 2;
+
+        surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
+        surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
+
+        for (int i = 0; i < count; ++i) {
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            surfaceHolder.setLeft(holderLeft + rand.nextInt(shake) - halfShake);
+                            surfaceHolder.setTop(holderTop + rand.nextInt(shake) - halfShake);
+                        }
+                    },
+                    interval * (int)i
+            );
+        }
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
@@ -341,9 +386,10 @@ public class GamePage extends Activity {
                         surfaceHolder.setTop(holderTop);
                     }
                 },
-                100
+                interval * count
         );
     }
+
 
     public void HandleOnClick(View _v) {
         if (_v.getId() == R.id.btn_leaderboard) {
@@ -363,12 +409,15 @@ public class GamePage extends Activity {
         }
         else if (_v.getId() == R.id.btn_share) {
             SharePhoto photo = new SharePhoto.Builder()
-                    .setBitmap(takeScreenshot())
+                    .setBitmap(screenshot)
+                    .setCaption("I got a score of " + scoreText.getText())
                     .build();
+
             if (ShareDialog.canShow(SharePhotoContent.class)) {
                 SharePhotoContent content = new SharePhotoContent.Builder()
                         .addPhoto(photo)
                         .build();
+
                 shareDialog.show(content);
             }
         }
