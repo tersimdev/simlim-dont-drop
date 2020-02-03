@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -323,6 +324,7 @@ public class MainGameSceneState implements StateBase {
     //call me when game ends
     private void OnGameEnd() {
         gameOver = true;
+        gamePage.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         circle.ResetKinematic();
         circle.SetCenterX(center.x);
@@ -368,6 +370,8 @@ public class MainGameSceneState implements StateBase {
 
         circle.setKinematic(true);
         line.active = true;
+
+        gamePage.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         AudioManager.Instance.PlayAudio(R.raw.correct, 1);
     }
