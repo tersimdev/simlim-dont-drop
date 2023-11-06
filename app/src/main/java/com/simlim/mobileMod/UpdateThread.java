@@ -4,8 +4,13 @@ package com.simlim.mobileMod;
 // Need a delicated thread to run Surfaceview's update method
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.SurfaceHolder;
+
+import androidx.core.content.res.ResourcesCompat;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class UpdateThread extends Thread {
 
@@ -24,6 +29,7 @@ public class UpdateThread extends Thread {
         StateManager.Instance.Init(_view);
         EntityManager.Instance.Init(_view);
         GameSystem.Instance.Init(_view);
+        AudioManager.Instance.Init(_view);
     }
 
     public boolean IsRunning()
@@ -72,7 +78,7 @@ public class UpdateThread extends Thread {
                 synchronized (holder)
                 {
                     // Fill the background color to reset
-                    canvas.drawColor(Color.BLACK);
+                    canvas.drawColor(ResourcesCompat.getColor(view.getResources(), R.color.MAIN, null));
 
                     StateManager.Instance.Render(canvas);
                 }

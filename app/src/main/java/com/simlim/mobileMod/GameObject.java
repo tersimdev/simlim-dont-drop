@@ -1,29 +1,28 @@
 package com.simlim .mobileMod;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.view.SurfaceView;
 
-import java.lang.reflect.GenericArrayType;
-
 public class GameObject implements EntityBase {
 
-    public Rect rect;
+    public String tag = "gameobject";
+
+    private PointF halfSize = new PointF();
+    protected PointF center = new PointF();
+    protected Rect rect = new Rect();
+
+    public Paint.Style style = Paint.Style.FILL;
     public int color;
-
-    private Bitmap bmp = null;
-
-    private SurfaceView holder;
+    public float strokeWidth = 1.f;
 
     private boolean isDone = false;
     private boolean isInit = false;
     private int renderLayer = 0;
 
-    private Bitmap bmp;
+    public boolean active = true;
 
     @Override
     public boolean IsDone() {
@@ -38,7 +37,6 @@ public class GameObject implements EntityBase {
     @Override
     public void Init(SurfaceView _view) {
         this.isInit = true;
-        this.holder = _view;
     }
 
     @Override
@@ -46,16 +44,13 @@ public class GameObject implements EntityBase {
 
     @Override
     public void Render(Canvas _canvas) {
-        Rect src = new Rect();
-        src.left = 0;
-        src.top = 0;
-        src.right = bmp.getWidth();
-        src.bottom = bmp.getHeight();
+        Paint paint = new Paint();
+        paint.setStyle(style);
+        paint.setColor(color);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(strokeWidth);
 
-        System.out.println("Src : " + src);
-        System.out.println("Dst : " + rect);
-
-        _canvas.drawBitmap(bmp, src, rect, null);
+        _canvas.drawRect(rect, paint);
     }
 
     @Override
@@ -73,19 +68,36 @@ public class GameObject implements EntityBase {
         this.renderLayer = _newLayer;
     }
 
-    public void SetResourceId(int _resourceId) {
-        bmp = BitmapFactory.decodeResource(holder.getResources(), _resourceId);
+    @Override
+    public boolean GetActive() {
+        return active;
     }
 
-    public void SetPosX(float _x) {
-        final float halfWidth = ((float) rect.right - (float) rect.left) * 0.5f;
-        rect.left = (int) (_x - halfWidth);
-        rect.right = (int) (_x + halfWidth);
+    public void SetCenterX(float _x) {
+        center.x = _x;
+        rect.left = (int)(center.x - halfSize.x);
+        rect.right = (int)(center.x + halfSize.x);
     }
 
-    public void SetPosY(float _y) {
-        final float halfHeight = ((float) rect.bottom - (float) rect.top) * 0.5f;
-        rect.top = (int) (_y - halfHeight);
-        rect.bottom = (int) (_y + halfHeight);
+    public void SetCenterY(float _y) {
+        center.y = _y;
+        rect.top = (int)(center.y - halfSize.y);
+        rect.bottom = (int)(center.y + halfSize.y);
+    }
+
+    public PointF GetCenter() {
+        return center;
+    }
+
+    public void SetWidth(float _width) {
+        halfSize.x = _width * 0.5f;
+        rect.left = (int)(center.x - halfSize.x);
+        rect.right = (int)(center.x + halfSize.x);
+    }
+
+    public void SetHeight(float _height) {
+        halfSize.y = _height * 0.5f;
+        rect.top = (int)(center.y - halfSize.y);
+        rect.bottom = (int)(center.y + halfSize.y);
     }
 }

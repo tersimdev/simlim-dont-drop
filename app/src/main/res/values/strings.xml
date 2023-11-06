@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Assignment</string>
+    <string name="app_name">Dont Drop</string>
+    <string name="company">SPLASH</string>
+    <string name="highscore">HIGH: </string>
+    <string name="facebook_app_id">601268533998923</string>
+    <string name="fb_login_protocol_scheme">fb601268533998923</string>
 </resources>

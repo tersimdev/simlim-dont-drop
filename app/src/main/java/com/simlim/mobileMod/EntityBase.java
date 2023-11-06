@@ -19,5 +19,5 @@ public interface EntityBase
     int GetRenderLayer();
     void SetRenderLayer(int _newLayer);
 
-
+    boolean GetActive();
 }

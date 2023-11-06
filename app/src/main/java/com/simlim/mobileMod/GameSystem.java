@@ -1,7 +1,5 @@
 package com.simlim.mobileMod;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.SurfaceView;
 
 // Created by TanSiewLan2019
@@ -28,11 +26,17 @@ public class GameSystem {
 
         StateManager.Instance.AddState(new MainMenu());
         StateManager.Instance.AddState(new MainGameSceneState());
+        StateManager.Instance.AddState(new Leaderboard());
     }
 
     public void SetIsPaused(boolean _newIsPaused)
     {
         isPaused = _newIsPaused;
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
     }
 
     public boolean GetIsPaused()

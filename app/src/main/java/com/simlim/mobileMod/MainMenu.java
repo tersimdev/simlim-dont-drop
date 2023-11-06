@@ -1,9 +1,10 @@
 package com.simlim.mobileMod;
+
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.view.SurfaceView;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,8 +35,7 @@ public class MainMenu extends Activity implements View.OnClickListener, StateBas
 
         if (v == btn_start) {
             intent.setClass(this, SplashPage.class);
-        }
-        else if (v == btn_back) {
+        } else if (v == btn_back) {
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
         }
